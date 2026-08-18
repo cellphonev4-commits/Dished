@@ -7,10 +7,10 @@ const firebaseConfig = {
   appId: "1:767578060689:web:6982e440d6077d8b5f4c30",
   measurementId: "G-GTGEC6F1FG"
 };
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = (typeof firebase !== 'undefined' && firebase.firestore) ? firebase.firestore() : null;
 // Extended Recipe Dataset
 const recipes = [
   {
