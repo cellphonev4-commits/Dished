@@ -29,10 +29,11 @@ function handleSignUp(event) {
 
 function handleLogin(event) {
   event.preventDefault();
+
   const email = document.getElementById('loginEmail').value.trim().toLowerCase();
   const password = document.getElementById('loginPassword').value;
 
-  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  const users = JSON.parse(localStorage.getItem('users')) || [];
   const user = users.find(u => u.email === email && u.password === password);
 
   if (!user) {
@@ -40,11 +41,7 @@ function handleLogin(event) {
     return;
   }
 
+  // Save session & redirect inside the function
   localStorage.setItem('currentUser', JSON.stringify(user));
   window.location.href = 'dashboard.html';
-}
-// Save the user session
-localStorage.setItem('currentUser', JSON.stringify({ name: username, email: email }));
-
-// Redirect to dashboard page
-window.location.href = "dashboard.html";
+} 
