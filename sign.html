@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dished</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+    </style>
+</head>
+<body>
+     <h1 class="logo" style="font-size: 80px; color: #5b8266; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); margin: 50px auto 0 auto; display: block; height: auto;">dished</h1>
+    <div class="login-container">
+        <h2>Login to Dished</h2>
+       
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="fullname" placeholder="Enter your name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Username / Email</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+             <button type="submit" class="login-btn">Login</button>
+            
+        </form>
+        <script>
+    const loginForm = document.getElementById('login-form');
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        const nameVal = document.getElementById('fullname').value;
+        const usernameVal = document.getElementById('username').value;
+        const passwordVal = document.getElementById('password').value;
+      
+        sessionStorage.setItem('loggedInName', nameVal);
+        sessionStorage.setItem('loggedInUser', usernameVal);
+        sessionStorage.setItem('loggedInPassword', passwordVal); 
+        window.location.href = 'home.html';
+    });
+</script>
+
+        <p>
+            Don't have an account? <a class="signin" href="auth.html" >Sign Up</a>
+        </p>
+    </div>
+
+</body>
+</html>

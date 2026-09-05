@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dished - Recipe Details</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+    </style>
+</head>
+
+<body>
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3 class="cart-title">Your Cart</h3>
+            <button class="close-cart-btn" onclick="toggleCart()">×</button>
+        </div>
+        <div id="cart-items-container" class="cart-items">
+            <!-- Items loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="alert('Proceeding to checkout!')">Checkout</button>
+        </div>
+    </div>
+    <!-- Left Sidebar (matches layout of screen shot) -->
+    <div class="profile-sidebar">
+        <!-- Application Logo -->
+        <h1 style="font-size: 40px; color: #fdfcd7; text-align: center; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">dished</h1>
+        
+        <!-- Profile Picture -->
+        <div style="position: relative;">
+            <img id="profile-avatar" class="profile-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop" style="cursor: pointer;" alt="Profile Picture" onclick="document.getElementById('profile-pic-input').click()" title="Click to change picture">
+            <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
+        </div>
+
+        <div class="profile-info">
+            <h2 id="show-name">Name</h2>
+            <p class="profile-username">@<span id="show-username">username</span></p>
+        </div>
+
+        <!-- Stats row underneath name -->
+        <div class="sidebar-stats">
+            <div class="stat-col">
+                <div class="stat-num">18</div>
+                <div class="stat-label">Reviews</div>
+            </div>
+            <div class="stat-col">
+                <div id="user-recipe-count" class="stat-num">0</div>
+                <div class="stat-label">Recipes</div>
+            </div>
+            <div class="stat-col">
+                <div class="stat-num">7</div>
+                <div class="stat-label">Lists</div>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="sidebar-nav">
+            <a href="home.html" class="sidebar-nav-link active">Home</a>
+            <a href="#" class="sidebar-nav-link">Explore</a>
+            <a href="home.html" class="sidebar-nav-link">Add Recipe</a>
+            <a href="#" class="sidebar-nav-link">Lists</a>
+            <a href="home.html?filter=liked" class="sidebar-nav-link">Liked Recipes</a>
+            <a href="#" class="sidebar-nav-link">My Reviews</a>
+            <a href="#" class="sidebar-nav-link">Settings</a>
+        </div>
+
+        <!-- My Lists widget -->
+        <div class="sidebar-lists">
+            <h4>My Lists</h4>
+            <div class="sidebar-lists-item">
+                <span>Want to Try</span>
+                <span class="sidebar-lists-badge">8</span>
+            </div>
+            <div class="sidebar-lists-item">
+                <span>Made It</span>
+                <span class="sidebar-lists-badge">12</span>
+            </div>
+            <div class="sidebar-lists-item">
+                <span>Favorites</span>
+                <span class="sidebar-lists-badge">6</span>
+            </div>
+            <div class="sidebar-lists-item">
+                <span>Quick & Easy</span>
+                <span class="sidebar-lists-badge">5</span>
+            </div>
+        </div>
+
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Header Navbar -->
+        <header class="main-header">
+            <h1 style="font-size: 32px; color: #5b8266; margin: 0; cursor: pointer; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);" onclick="window.location.href='home.html'">dished</h1>
+
+            <div class="header-search">
+                <input type="text" placeholder="Search recipes, ingredients, cuisines...">
+            </div>
+
+            <div class="header-links">
+                <a href="home.html" class="header-link">Home</a>
+                <a href="#" class="header-link">Explore</a>
+                <a href="#" class="header-link">Categories</a>
+                <a href="#" class="header-link">Community</a>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="header-cart" onclick="toggleCart()">
+                    🛒 Cart
+                    <span id="cart-count-badge" class="cart-badge" style="display: none;">0</span>
+                </div>
+                <span style="cursor: pointer; font-size: 15px; color: #5b8266; font-weight: bold;">Alerts</span>
+                <div style="width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fdfcd7; background: #fdfcd7; color: #5b8266; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">U</div>
+            </div>
+        </header>
+
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs">
+            <a href="home.html">Home</a> &gt; <span id="breadcrumb-category">Category</span> &gt; <span
+                id="breadcrumb-title" style="font-weight: bold; color: #333;">Recipe Title</span>
+        </div>
+
+        <!-- Recipe Main Panel Grid -->
+        <div class="recipe-detail-layout">
+            <!-- Left image -->
+            <div class="recipe-image-wrapper">
+                <img id="recipe-img" src="" alt="Recipe Image">
+                <button id="like-recipe-btn" class="recipe-fav-btn" style="font-size: 12px; font-weight: bold; color: #e06666;">Like</button>
+            </div>
+
+            <!-- Middle description -->
+            <div class="recipe-content-main">
+                <span id="recipe-category" class="category-tag">Category</span>
+                <h2 id="recipe-title" class="recipe-main-title">Recipe Title</h2>
+                <div class="recipe-author">by <span id="recipe-creator" style="font-weight: bold; cursor: pointer; text-decoration: underline;" onclick="goToProfile(this.innerText)">Author</span> <span
+                        id="verified-badge" style="color: #5b8266; font-size: 14px;">✔</span></div>
+
+                <div class="recipe-ratings">
+                    <span id="star-display">★★★★★</span>
+                    <span id="rating-number" style="font-weight: bold; color: #333;">4.6</span>
+                    <span id="reviews-count-txt" style="color: #777; font-size: 14px;">(128 reviews)</span>
+                </div>
+
+                <p id="recipe-description" class="recipe-description">
+                    Loading description...
+                </p>
+
+                <div class="recipe-action-btns">
+                    <button class="btn-primary-dished" onclick="scrollToReviews()">Add Review</button>
+                    <button class="btn-secondary-dished">Save to List</button>
+                </div>
+            </div>
+
+            <!-- Right stats card -->
+            <div class="recipe-stats-card">
+                <div class="stat-row">
+                    <span>Prep Time</span>
+                    <strong id="stat-prep">15 mins</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Cook Time</span>
+                    <strong id="stat-cook">12 mins</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Servings</span>
+                    <strong id="stat-servings">24 cookies</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Difficulty</span>
+                    <strong id="stat-difficulty" style="color: #5b8266;">Easy</strong>
+                </div>
+
+                <div class="recipe-tags-grid" id="tags-container">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Ingredients and Instructions Grid -->
+        <div class="recipe-details-grid">
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 class="details-section-title" style="margin: 0;">Ingredients</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="buyAllIngredients()" class="btn-primary-dished" style="padding: 4px 12px; font-size: 14px;">Buy All</button>
+                        <select id="measurement-toggle" style="padding: 4px 8px; border-radius: 4px; border: 1px solid #5b8266; font-family: inherit;">
+                            <option value="us">US Custom</option>
+                            <option value="metric">Metric</option>
+                        </select>
+                    </div>
+                </div>
+                <ul id="ingredients-list" class="ingredients-list-detail">
+                    <!-- Loaded dynamically -->
+                </ul>
+
+                <!-- Basic AI Allergy Substitution Box -->
+                <div class="allergy-sub-box" style="margin-top: 20px; border-top: 1px solid rgba(76, 157, 176, 0.2); padding-top: 15px;">
+                    <h4 style="font-size: 15px; color: #5b8266; margin-bottom: 8px;">Auto Allergy Substitution</h4>
+                    <div style="display: flex; gap: 8px; flex-direction: column;">
+                        <input type="text" id="allergy-input" placeholder="What are you allergic to? (e.g. Dairy, Nuts)" style="padding: 8px; border: 1px solid #5b8266; border-radius: 6px; font-size: 14px; font-family: inherit;">
+                        
+                        <!-- Buttons row -->
+                        <div style="display: flex; gap: 8px;">
+                            <button id="auto-sub-btn" class="btn-primary-dished" style="padding: 8px; font-size: 14px; border-radius: 6px; flex: 1;">Auto Substitute</button>
+                            <button id="reset-sub-btn" class="btn-secondary-dished" style="padding: 8px; font-size: 14px; border-radius: 6px; flex: 1;">Restart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="details-section-title">Instructions</h3>
+                <ol id="instructions-list" class="instructions-list-detail">
+                    <!-- Loaded dynamically -->
+                </ol>
+            </div>
+        </div>
+
+        <!-- Reviews / Comments Section -->
+        <div id="reviews-section" class="reviews-section-detail">
+            <div class="reviews-header-detail">
+                <h3 class="details-section-title" id="reviews-title">Reviews (128)</h3>
+                <select
+                    style="padding: 6px 12px; border-radius: 8px; border: 1px solid #5b8266; font-family: inherit; font-size: 14px;">
+                    <option>Most Recent</option>
+                    <option>Highest Rated</option>
+                    <option>Lowest Rated</option>
+                </select>
+            </div>
+
+            <!-- Write a Review card -->
+            <div class="review-form-card">
+                <h4 style="margin-bottom: 12px; color: #5b8266;">Your Review</h4>
+                <form id="comment-form">
+                    <div class="review-rating-select">
+                        <span class="star-rating-select" data-value="1">★</span>
+                        <span class="star-rating-select" data-value="2">★</span>
+                        <span class="star-rating-select" data-value="3">★</span>
+                        <span class="star-rating-select" data-value="4">★</span>
+                        <span class="star-rating-select" data-value="5">★</span>
+                        <span style="font-size: 14px; color: #666; margin-left: 10px;">Select stars</span>
+                    </div>
+                    <textarea id="review-text" class="review-textarea-dished" placeholder="Write your review..."
+                        rows="3" required></textarea>
+                    <button type="submit" class="btn-primary-dished" style="font-size: 14px; padding: 8px 16px;">Submit
+                        Review</button>
+                </form>
+            </div>
+
+            <!-- List of comments/reviews -->
+            <div id="reviews-container" class="reviews-grid-detail">
+                <!-- Comments loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const savedName = sessionStorage.getItem('loggedInName') || "Nora";
+        const savedUser = sessionStorage.getItem('loggedInUser') || "nora";
+        const savedPass = sessionStorage.getItem('loggedInPassword');
+
+        
+        document.getElementById('show-name').textContent = savedName;
+        document.getElementById('show-username').textContent = savedUser;
+
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profilePicInput = document.getElementById('profile-pic-input');
+        
+        
+        const savedPic = localStorage.getItem('userProfilePic');
+        if (savedPic && profileAvatar) {
+            profileAvatar.src = savedPic;
+        }
+
+        if (profilePicInput && profileAvatar) {
+            profilePicInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const base64Str = event.target.result;
+                        profileAvatar.src = base64Str;
+                        localStorage.setItem('userProfilePic', base64Str);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        function updateUserStats() {
+            const recipeCountEl = document.getElementById('user-recipe-count');
+            if (recipeCountEl) {
+                const currentUser = savedName || savedUser || "Guest";
+                const allCurrentRecipes = JSON.parse(localStorage.getItem('dishedRecipes')) || [];
+                const userRecipesCount = allCurrentRecipes.filter(r => r.creator === currentUser).length;
+                recipeCountEl.textContent = userRecipesCount;
+            }
+        }
+        updateUserStats();
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'sign.html';
+        }
+
+        function scrollToReviews() {
+            document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function goToProfile(profileName) {
+            sessionStorage.setItem('viewingProfileName', profileName);
+            window.location.href = 'profile.html';
+        }
+
+        
+        const activeRecipeId = parseInt(sessionStorage.getItem('activeRecipeId'));
+        let recipes = JSON.parse(localStorage.getItem('dishedRecipes')) || [];
+        const featured = JSON.parse(localStorage.getItem('featuredRecipes')) || [];
+        
+        const allRecipes = recipes.concat(featured);
+
+        let activeRecipe = allRecipes.find(r => r.id === activeRecipeId);
+
+        if (!activeRecipe) {
+            activeRecipe = recipes[2] || recipes[0] || {
+                id: 3,
+                title: "Chocolate Chip Cookies",
+                imgUrl: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop",
+                ingredients: "Butter, White sugar, Brown sugar, Eggs, Vanilla extract, Flour, Baking soda, Chocolate chips",
+                instructions: "Preheat oven to 350°F (175°C). Cream butter and sugars. Add eggs and vanilla. Mix dry ingredients, stir into batter. Fold in chocolate chips. Bake for 10-12 minutes.",
+                creator: "Sally's Baking Recipes",
+                prepTime: "15 mins",
+                cookTime: "12 mins",
+                servings: "24 cookies",
+                difficulty: "Easy",
+                tags: "Cookies, Easy, Dessert, Popular",
+                description: "Crispy edges, soft center, and loaded with chocolate chips. The perfect classic cookie!",
+                category: "Dessert"
+            };
+        }
+
+        
+        document.getElementById('breadcrumb-title').textContent = activeRecipe.title;
+        document.getElementById('breadcrumb-category').textContent = activeRecipe.category || "Recipes";
+        document.getElementById('recipe-category').textContent = activeRecipe.category || "Recipes";
+        document.getElementById('recipe-title').textContent = activeRecipe.title;
+        document.getElementById('recipe-img').src = activeRecipe.imgUrl || 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&auto=format&fit=crop';
+        document.getElementById('recipe-creator').textContent = activeRecipe.creator || "Guest";
+        document.getElementById('recipe-description').textContent = activeRecipe.description || "A delicious, freshly shared home-cooked recipe.";
+
+        
+        const checkBadge = document.getElementById('verified-badge');
+        if (activeRecipe.creator !== "Sally's Baking Recipes" && activeRecipe.creator !== "Chef Maria") {
+            checkBadge.style.display = 'none';
+        }
+
+        
+        document.getElementById('stat-prep').textContent = activeRecipe.prepTime || "10 mins";
+        document.getElementById('stat-cook').textContent = activeRecipe.cookTime || "15 mins";
+        document.getElementById('stat-servings').textContent = activeRecipe.servings || "4 servings";
+        document.getElementById('stat-difficulty').textContent = activeRecipe.difficulty || "Easy";
+
+        
+        const tagsContainer = document.getElementById('tags-container');
+        const tagsArray = (activeRecipe.tags || "Home Cooked, Delicious").split(',');
+        tagsArray.forEach(tag => {
+            if (tag.trim().length > 0) {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = 'recipe-tag';
+                tagSpan.textContent = tag.trim();
+                tagsContainer.appendChild(tagSpan);
+            }
+        });
+
+    
+        const ingredientsContainer = document.getElementById('ingredients-list');
+        const measurementToggle = document.getElementById('measurement-toggle');
+
+        if (measurementToggle) {
+        
+            measurementToggle.addEventListener('change', function() {
+                renderIngredientsList();
+            });
+        }
+
+        //measuments sytems starts here
+        function convertToMetric(ingredientText) {
+            let s = ingredientText;
+            
+        
+            s = s.replace("1/2", "0.5");
+            s = s.replace("1/4", "0.25");
+            s = s.replace("3/4", "0.75");
+            
+            // Replace cups with ml (1 cup = 240 ml)
+            s = s.replace(/([0-9.]+)\s*cup[s]?/gi, function(match, number) { return (number * 240) + " ml"; });
+            // Replace tbsp with ml (1 tbsp = 15 ml)
+            s = s.replace(/([0-9.]+)\s*tbsp/gi, function(match, number) { return (number * 15) + " ml"; });
+            // Replace tsp with ml (1 tsp = 5 ml)
+            s = s.replace(/([0-9.]+)\s*tsp/gi, function(match, number) { return (number * 5) + " ml"; });
+            // Replace lb with g (1 lb = 450 g)
+            s = s.replace(/([0-9.]+)\s*lb/gi, function(match, number) { return (number * 450) + " g"; });
+            // Replace oz with g (1 oz = 28 g)
+            s = s.replace(/([0-9.]+)\s*oz/gi, function(match, number) { return (number * 28) + " g"; });
+            
+            return s;
+        }
+
+        function renderIngredientsList() {
+            ingredientsContainer.innerHTML = '';
+            
+        
+            const isMetric = measurementToggle.value === 'metric';
+
+            activeRecipe.ingredients.split(',').forEach(ing => {
+                if (ing.trim().length > 0) {
+                    let textToDisplay = ing.trim();
+                    
+                    let priceMatch = textToDisplay.match(/-\s*\$?(\d+\.\d{2})/);
+                    let price = 2.99;
+                    if (priceMatch) {
+                        price = parseFloat(priceMatch[1]);
+                        textToDisplay = textToDisplay.replace(priceMatch[0], '').trim();
+                    } else {
+                        price = (textToDisplay.length % 5) + 1.99;
+                    }
+
+                    if (isMetric) {
+                        textToDisplay = convertToMetric(textToDisplay);
+                    }
+
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div class="ingredient-row">
+                            <div class="ingredient-left">${textToDisplay}</div>
+                            <div class="ingredient-buy-group">
+                                <span class="ingredient-price">$${price.toFixed(2)}</span>
+                                <button class="add-to-cart-btn" onclick="addToCart('${textToDisplay.replace(/'/g, "\\'")}', ${price})">Add to Cart</button>
+                            </div>
+                        </div>
+                    `;
+                    ingredientsContainer.appendChild(li);
+                }
+            });
+        }
+
+        
+        renderIngredientsList();
+
+    //allegy susstitution starts here
+        let originalIngredients = "";
+
+       
+        const autoSubBtn = document.getElementById('auto-sub-btn');
+        if (autoSubBtn) {
+            autoSubBtn.addEventListener('click', function() {
+                
+                if (originalIngredients === "") {
+                    originalIngredients = activeRecipe.ingredients;
+                }
+
+                
+                const allergy = document.getElementById('allergy-input').value.toLowerCase().trim();
+                
+                
+                if (allergy === "dairy") {
+                    activeRecipe.ingredients = activeRecipe.ingredients.replace(/Butter/ig, "Coconut Oil");
+                    activeRecipe.ingredients = activeRecipe.ingredients.replace(/Milk/ig, "Almond Milk");
+                    alert("Replaced dairy ingredients!");
+                } 
+                else if (allergy === "nuts") {
+                    activeRecipe.ingredients = activeRecipe.ingredients.replace(/Peanut Butter/ig, "Sunflower Seed Butter");
+                    alert("Replaced nut ingredients!");
+                }
+                else if (allergy === "gluten") {
+                    activeRecipe.ingredients = activeRecipe.ingredients.replace(/Flour/ig, "Gluten-Free Flour");
+                    alert("Replaced gluten ingredients!");
+                }
+                else {
+                    alert("Please type exactly 'dairy', 'nuts', or 'gluten'.");
+                    return; 
+                }
+
+                
+                renderIngredientsList();
+            });
+        }
+
+       
+        const resetSubBtn = document.getElementById('reset-sub-btn');
+        if (resetSubBtn) {
+            resetSubBtn.addEventListener('click', function() {
+              
+                if (originalIngredients !== "") {
+                  
+                    activeRecipe.ingredients = originalIngredients;
+                    
+                    
+                    renderIngredientsList();
+                    
+                    
+                    document.getElementById('allergy-input').value = '';
+                    alert("Restarted! Ingredients are back to normal.");
+                } else {
+                    alert("You haven't changed anything yet!");
+                }
+            });
+        }
+
+        
+        const instructionsContainer = document.getElementById('instructions-list');
+       
+        const steps = activeRecipe.instructions.split(/(?:\. |\n|; )/);
+        steps.forEach(step => {
+            if (step.trim().length > 3) {
+                const li = document.createElement('li');
+                li.textContent = step.trim() + ".";
+                instructionsContainer.appendChild(li);
+            }
+        });
+
+        
+        let currentRatingVal = 5;
+        const starSelects = document.querySelectorAll('.star-rating-select');
+
+        starSelects.forEach(star => {
+            star.addEventListener('click', (e) => {
+                currentRatingVal = parseInt(e.target.getAttribute('data-value'));
+                updateStarSelection(currentRatingVal);
+            });
+        });
+
+        function updateStarSelection(val) {
+            starSelects.forEach(star => {
+                const starVal = parseInt(star.getAttribute('data-value'));
+                if (starVal <= val) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        updateStarSelection(currentRatingVal);
+
+        
+        const defaultReviews = [
+            {
+                user: "Layla",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop",
+                date: "2 days ago",
+                rating: 5,
+                comment: "Super easy and delicious! My family loved it. Will make again."
+            },
+            {
+                user: "Omar",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop",
+                date: "1 week ago",
+                rating: 4,
+                comment: "Great recipe. I added a pinch of sea salt on top, amazing!"
+            },
+            {
+                user: "Hana",
+                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop",
+                date: "2 weeks ago",
+                rating: 5,
+                comment: "Turned out perfect!"
+            }
+        ];
+
+       
+        const reviewStorageKey = `reviews_recipe_${activeRecipe.id}`;
+        let recipeReviews = JSON.parse(localStorage.getItem(reviewStorageKey));
+
+        if (!recipeReviews) {
+            recipeReviews = defaultReviews;
+            localStorage.setItem(reviewStorageKey, JSON.stringify(recipeReviews));
+        }
+
+        const reviewsContainer = document.getElementById('reviews-container');
+        const reviewsTitle = document.getElementById('reviews-title');
+        const reviewsCountTxt = document.getElementById('reviews-count-txt');
+
+        function renderReviews() {
+            reviewsContainer.innerHTML = '';
+            reviewsTitle.textContent = `Reviews (${recipeReviews.length})`;
+            reviewsCountTxt.textContent = `(${recipeReviews.length} reviews)`;
+
+           
+            let sum = 0;
+            recipeReviews.forEach(r => sum += r.rating);
+            const avg = recipeReviews.length > 0 ? (sum / recipeReviews.length).toFixed(1) : "5.0";
+            document.getElementById('rating-number').textContent = avg;
+
+            
+            const fullStars = Math.round(parseFloat(avg));
+            let starStr = "";
+            for (let i = 1; i <= 5; i++) {
+                starStr += i <= fullStars ? "★" : "☆";
+            }
+            document.getElementById('star-display').textContent = starStr;
+
+            recipeReviews.forEach(review => {
+                const card = document.createElement('div');
+                card.className = 'review-comment-card';
+
+                let commentStars = "";
+                for (let i = 1; i <= 5; i++) {
+                    commentStars += i <= review.rating ? "★" : "☆";
+                }
+
+                card.innerHTML = `
+                    <div class="review-card-top">
+                        <div class="review-user-info">
+                            <img class="review-user-avatar" src="${review.avatar || 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&auto=format&fit=crop'}" alt="avatar">
+                            <div>
+                                <div class="review-user-name" style="cursor: pointer; text-decoration: underline;" onclick="goToProfile('${review.user}')">${review.user}</div>
+                                <div class="review-user-date">${review.date}</div>
+                            </div>
+                        </div>
+                        <div class="review-card-stars">${commentStars}</div>
+                    </div>
+                    <div class="review-comment-text">${review.comment}</div>
+                `;
+                reviewsContainer.appendChild(card);
+            });
+        }
+
+  
+        const commentForm = document.getElementById('comment-form');
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = document.getElementById('review-text').value;
+
+            const newReview = {
+                user: savedName || "Guest",
+                avatar: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&auto=format&fit=crop", // placeholder
+                date: "Just now",
+                rating: currentRatingVal,
+                comment: text
+            };
+
+            recipeReviews.unshift(newReview);
+            localStorage.setItem(reviewStorageKey, JSON.stringify(recipeReviews));
+
+            renderReviews();
+            commentForm.reset();
+            currentRatingVal = 5;
+            updateStarSelection(5);
+        });
+
+       
+        renderReviews();
+
+        
+        let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
+        const likeBtn = document.getElementById('like-recipe-btn');
+        
+        function updateLikeBtnUI() {
+            if (likedRecipes.includes(activeRecipe.id)) {
+                likeBtn.textContent = "Liked ♥";
+                likeBtn.style.backgroundColor = "#e06666";
+                likeBtn.style.color = "white";
+            } else {
+                likeBtn.textContent = "Like";
+                likeBtn.style.backgroundColor = "white";
+                likeBtn.style.color = "#e06666";
+            }
+        }
+        
+        likeBtn.addEventListener('click', () => {
+            const index = likedRecipes.indexOf(activeRecipe.id);
+            if (index > -1) {
+                // Unlike
+                likedRecipes.splice(index, 1);
+            } else {
+                // Like
+                likedRecipes.push(activeRecipe.id);
+            }
+            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
+            updateLikeBtnUI();
+        });
+
+        e
+        updateLikeBtnUI();
+
+        // cart
+        let cart = JSON.parse(localStorage.getItem('dishedCart')) || [];
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total-price');
+            const badge = document.getElementById('cart-count-badge');
+            
+            if (!container) return; 
+
+            container.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center; margin-top: 20px;">Your cart is empty.</p>';
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = 'block';
+                badge.textContent = cart.length;
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    const el = document.createElement('div');
+                    el.className = 'cart-item';
+                    el.innerHTML = `
+                        <div class="cart-item-details">
+                            <span class="cart-item-name">${item.name}</span>
+                            <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
+                    `;
+                    container.appendChild(el);
+                });
+            }
+            totalEl.textContent = '$' + total.toFixed(2);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('dishedCart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name: name, price: price });
+            localStorage.setItem('dishedCart', JSON.stringify(cart));
+            updateCartUI();
+            
+            document.getElementById('cart-sidebar').classList.add('open');
+        }
+        
+        function buyAllIngredients() {
+            activeRecipe.ingredients.split(',').forEach(ing => {
+                if (ing.trim().length > 0) {
+                    let textToDisplay = ing.trim();
+                    let priceMatch = textToDisplay.match(/-\s*\$?(\d+\.\d{2})/);
+                    let price = 2.99;
+                    if (priceMatch) {
+                        price = parseFloat(priceMatch[1]);
+                        textToDisplay = textToDisplay.replace(priceMatch[0], '').trim();
+                    } else {
+                        price = (textToDisplay.length % 5) + 1.99;
+                    }
+                    
+                    const isMetric = measurementToggle && measurementToggle.value === 'metric';
+                    if (isMetric) {
+                        textToDisplay = convertToMetric(textToDisplay);
+                    }
+
+                    cart.push({ name: textToDisplay, price: price });
+                }
+            });
+            localStorage.setItem('dishedCart', JSON.stringify(cart));
+            updateCartUI();
+            document.getElementById('cart-sidebar').classList.add('open');
+        }
+
+        updateCartUI();
+    </script>
+</body>
+
+</html>
