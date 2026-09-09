@@ -1,90 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dished - Savor Every Bite</title>
+    <title>dished | Savor Every Bite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="landing-body">
-    <!-- Header -->
-    <header class="landing-header">
-        <a href="index.html" style="text-decoration: none;">
-            <h1 style="font-size: 42px; color: #fdfcd7; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.25);">dished</h1>
-        </a>
-        <nav class="landing-nav-links">
-            <a href="#features" class="landing-nav-link">Features</a>
-            <a href="welcome.html" class="landing-nav-btn">Sign In / Join</a>
-        </nav>
+
+<body class="bg-gradient-to-b from-cream-100 via-cream-200 to-cream-500/70 min-h-screen flex flex-col">
+
+    <!-- ============ Header ============ -->
+    <header class="sticky top-0 z-50 bg-sage-500/95 backdrop-blur-md shadow-soft">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 h-[78px] flex items-center justify-between gap-4">
+            <a href="index.html" class="brand" aria-label="dished home"><img src="logo-cream.png" alt="dished" class="h-[46px] sm:h-[58px]"></a>
+
+            <nav class="hidden md:flex items-center gap-1 text-cream-100">
+                <a href="#features" class="px-4 py-2 rounded-full hover:bg-cream-100/15 transition">Features</a>
+                <a href="#how" class="px-4 py-2 rounded-full hover:bg-cream-100/15 transition">How it works</a>
+                <a href="welcome.html" class="px-4 py-2 rounded-full hover:bg-cream-100/15 transition">About</a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <a href="home.html" class="hidden sm:inline-flex btn btn-ghost btn-sm !text-cream-100 hover:!bg-cream-100/15 hover:!text-cream-100">
+                    <i class="ph ph-compass"></i> Browse
+                </a>
+                <a href="sign.html" class="btn btn-cream btn-sm sm:!px-6">
+                    <i class="ph ph-sign-in"></i> Sign in
+                </a>
+            </div>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <main class="landing-hero">
-        <div class="landing-hero-content">
-            <div class="badge-tag">
-                <span>🌿</span> 100% Allergy & Dietary Inclusive
-            </div>
-            <h1 class="hero-title">
-                Welcome to <span>dished</span>
+    <!-- ============ Hero ============ -->
+    <main class="max-w-7xl w-full mx-auto px-5 sm:px-8 py-14 lg:py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="animate-fade-up">
+            <span class="chip !py-2 !px-4 !text-sm mb-6">
+                <i class="ph-duotone ph-leaf text-base"></i> 100% allergy &amp; dietary inclusive
+            </span>
+
+            <h1 class="font-display text-[44px] sm:text-6xl leading-[1.08] text-ink mb-5">
+                Welcome to <span class="text-sage-500">dished</span>
             </h1>
-            <p class="hero-motto">
-                "Savor Every Bite, Tailored for Every Table."
+
+            <p class="font-display text-2xl sm:text-[26px] italic text-sage-700 border-l-4 border-sage-500 pl-5 mb-6 leading-snug">
+                “Savor Every Bite, Tailored for Every Table.”
             </p>
-            <p style="font-size: 18px; color: #4a5d52; margin-bottom: 30px; line-height: 1.6;">
-                Discover delicious home-cooked recipes, share your favorite culinary creations, and instantly customize ingredients for Dairy, Gluten, Nuts, Eggs, Soy, Seafood, and Vegan preferences.
+
+            <p class="text-[17px] leading-relaxed text-muted max-w-xl mb-8">
+                Discover home-cooked recipes, share your own, and swap any ingredient in one tap:
+                dairy, gluten, nuts, eggs, soy, seafood or fully vegan. Then send the shopping
+                list straight to your basket.
             </p>
-            <div class="hero-cta-group">
-                <a href="welcome.html" class="hero-cta-primary">
-                    Get Started Now
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+
+            <div class="flex flex-wrap items-center gap-3 mb-10">
+                <a href="sign.html" class="btn btn-primary btn-lg">
+                    Get started now <i class="ph-bold ph-arrow-right"></i>
                 </a>
-                <a href="home.html" class="hero-cta-secondary">Explore Guest Mode</a>
+                <a href="home.html" class="btn btn-outline btn-lg">
+                    <i class="ph ph-fork-knife"></i> Explore as guest
+                </a>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-3">
+                <div class="flex items-center gap-2.5">
+                    <i class="ph-duotone ph-bowl-food text-2xl text-sage-500"></i>
+                    <div><div class="font-display text-xl leading-none text-ink">120+</div>
+                        <div class="text-xs text-muted">recipes</div></div>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <i class="ph-duotone ph-shield-check text-2xl text-sage-500"></i>
+                    <div><div class="font-display text-xl leading-none text-ink">8</div>
+                        <div class="text-xs text-muted">allergy swaps</div></div>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <i class="ph-duotone ph-users text-2xl text-sage-500"></i>
+                    <div><div class="font-display text-xl leading-none text-ink">2.4k</div>
+                        <div class="text-xs text-muted">home cooks</div></div>
+                </div>
             </div>
         </div>
 
-        <div class="landing-hero-visual">
-            <div class="hero-image-card">
-                <img src="avacado.jfif" alt="Classic Avocado Toast">
-                <div class="hero-card-badge">
-                    <h3>Classic Avocado Toast</h3>
-                    <p>🥑 Gluten-Free & Dairy-Free Adaptable • 10 mins</p>
+        <!-- Hero visual -->
+        <div class="relative flex justify-center lg:justify-end animate-fade-up">
+            <div class="relative w-full max-w-[480px] rounded-xl3 overflow-hidden border-[6px] border-white shadow-lift animate-float">
+                <img src="avacado.jfif" alt="Classic avocado toast" class="w-full h-[380px] sm:h-[440px] object-cover">
+                <div class="absolute inset-x-4 bottom-4 p-4 rounded-2xl bg-white/90 backdrop-blur shadow-card">
+                    <h3 class="font-display text-xl text-ink mb-1">Classic Avocado Toast</h3>
+                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted">
+                        <span class="flex items-center gap-1"><i class="ph ph-clock"></i> 10 mins</span>
+                        <span class="flex items-center gap-1"><i class="ph ph-leaf text-sage-500"></i> Gluten &amp; dairy adaptable</span>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Floating chips -->
+            <div class="hidden sm:flex absolute -left-2 lg:left-2 top-10 items-center gap-2 px-4 py-2.5 rounded-2xl bg-white shadow-card animate-fade-up">
+                <i class="ph-fill ph-star text-honey-400 text-lg"></i>
+                <span class="text-sm"><b class="font-semibold">4.8</b> <span class="text-muted">avg rating</span></span>
+            </div>
+            <div class="hidden sm:flex absolute -right-2 lg:right-2 bottom-40 items-center gap-2 px-4 py-2.5 rounded-2xl bg-sage-500 text-cream-100 shadow-glow animate-fade-up">
+                <i class="ph-fill ph-basket text-lg"></i>
+                <span class="text-sm">6 ingredients added</span>
             </div>
         </div>
     </main>
 
-    <!-- Features Section -->
-    <section id="features" class="landing-features">
-        <h2 class="section-headline">Why You'll Love Dished</h2>
-        <p class="section-subtext">Designed for food lovers, home chefs, and anyone with dietary preferences.</p>
+    <!-- ============ Allergy strip ============ -->
+    <section class="bg-sage-500 text-cream-100 py-8">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+            <span class="font-display text-xl">Cook around</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-cow text-xl"></i> Dairy</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-grains-slash text-xl"></i> Gluten</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-acorn text-xl"></i> Nuts</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-egg text-xl"></i> Eggs</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-plant text-xl"></i> Soy</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-shrimp text-xl"></i> Shellfish</span>
+            <span class="flex items-center gap-2 text-[15px]"><i class="ph-duotone ph-leaf text-xl"></i> Vegan</span>
+        </div>
+    </section>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🛡️</div>
-                <h3>Allergy & Dietary Customizer</h3>
-                <p>One-click auto-substitutions for Dairy, Gluten, Nuts, Peanuts, Eggs, Soy, Shellfish, and Vegan options.</p>
+    <!-- ============ Features ============ -->
+    <section id="features" class="max-w-7xl mx-auto w-full px-5 sm:px-8 py-20 lg:py-24 text-center">
+        <h2 class="font-display text-4xl sm:text-5xl text-ink mb-3" data-reveal>Why you'll love dished</h2>
+        <p class="text-lg text-muted mb-12 max-w-2xl mx-auto" data-reveal>
+            Built for food lovers, home chefs, and anyone who has ever had to ask
+            “can I actually eat this?”
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-6 text-left">
+            <article class="card p-8 hover:-translate-y-2 hover:shadow-lift hover:border-sage-500 transition duration-300" data-reveal>
+                <div class="w-14 h-14 rounded-2xl bg-sage-50 text-sage-500 flex items-center justify-center mb-5">
+                    <i class="ph-duotone ph-shield-check text-3xl"></i>
+                </div>
+                <h3 class="font-display text-2xl text-ink mb-2.5">Allergy &amp; dietary customiser</h3>
+                <p class="text-muted leading-relaxed">
+                    One tap rewrites the ingredient list for dairy, gluten, nuts, peanuts, eggs,
+                    soy, shellfish and vegan swaps, with the substitution highlighted.
+                </p>
+            </article>
+
+            <article class="card p-8 hover:-translate-y-2 hover:shadow-lift hover:border-sage-500 transition duration-300" data-reveal>
+                <div class="w-14 h-14 rounded-2xl bg-sage-50 text-sage-500 flex items-center justify-center mb-5">
+                    <i class="ph-duotone ph-chef-hat text-3xl"></i>
+                </div>
+                <h3 class="font-display text-2xl text-ink mb-2.5">Share your recipes</h3>
+                <p class="text-muted leading-relaxed">
+                    Publish your own with prep time, cook time, servings, difficulty and
+                    step-by-step instructions that number themselves.
+                </p>
+            </article>
+
+            <article class="card p-8 hover:-translate-y-2 hover:shadow-lift hover:border-sage-500 transition duration-300" data-reveal>
+                <div class="w-14 h-14 rounded-2xl bg-sage-50 text-sage-500 flex items-center justify-center mb-5">
+                    <i class="ph-duotone ph-basket text-3xl"></i>
+                </div>
+                <h3 class="font-display text-2xl text-ink mb-2.5">Smart grocery basket</h3>
+                <p class="text-muted leading-relaxed">
+                    Add one ingredient or the whole list, switch between US and metric
+                    measurements, and watch the total add up in dinar.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- ============ How it works ============ -->
+    <section id="how" class="bg-white/60 border-y border-sage-100 py-20 lg:py-24">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <h2 class="font-display text-4xl sm:text-5xl text-ink text-center mb-14" data-reveal>Three steps to dinner</h2>
+
+            <ol class="grid md:grid-cols-3 gap-8">
+                <li class="relative text-center" data-reveal>
+                    <span class="inline-flex w-16 h-16 rounded-full bg-sage-500 text-cream-100 font-display text-2xl items-center justify-center mb-5 shadow-glow">1</span>
+                    <h3 class="font-display text-2xl text-ink mb-2">Find a recipe</h3>
+                    <p class="text-muted leading-relaxed px-4">Filter the feed by diet, search by ingredient, or follow a cook you trust.</p>
+                </li>
+                <li class="relative text-center" data-reveal>
+                    <span class="inline-flex w-16 h-16 rounded-full bg-sage-500 text-cream-100 font-display text-2xl items-center justify-center mb-5 shadow-glow">2</span>
+                    <h3 class="font-display text-2xl text-ink mb-2">Make it yours</h3>
+                    <p class="text-muted leading-relaxed px-4">Pick what you can't eat and dished rewrites the ingredients around it.</p>
+                </li>
+                <li class="relative text-center" data-reveal>
+                    <span class="inline-flex w-16 h-16 rounded-full bg-sage-500 text-cream-100 font-display text-2xl items-center justify-center mb-5 shadow-glow">3</span>
+                    <h3 class="font-display text-2xl text-ink mb-2">Fill the basket</h3>
+                    <p class="text-muted leading-relaxed px-4">Send every ingredient to your basket and head to the kitchen.</p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- ============ Taste of the feed ============ -->
+    <section class="max-w-7xl mx-auto w-full px-5 sm:px-8 py-20">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+            <div>
+                <h2 class="font-display text-4xl text-ink" data-reveal>Fresh from the feed</h2>
+                <p class="text-muted mt-1" data-reveal>A taste of what people are cooking right now.</p>
             </div>
+            <a href="home.html" class="btn btn-outline">See all recipes <i class="ph-bold ph-arrow-right"></i></a>
+        </div>
 
-            <div class="feature-card">
-                <div class="feature-icon">👨‍🍳</div>
-                <h3>Share Your Recipes</h3>
-                <p>Add your own recipes with custom prep time, cook time, servings, difficulty ratings, and step-by-step instructions.</p>
-            </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+            <a href="home.html" class="recipe-card" data-reveal>
+                <img src="pasta.jfif" alt="Spaghetti carbonara" class="recipe-card-img">
+                <div class="card-rating"><i class="ph-fill ph-star"></i><b>4.7</b></div>
+                <div class="recipe-card-overlay">
+                    <h3 class="recipe-card-title">Spaghetti Carbonara</h3>
+                    <div class="recipe-card-meta"><span><i class="ph ph-clock"></i> 10 mins</span></div>
+                </div>
+            </a>
+            <a href="home.html" class="recipe-card" data-reveal>
+                <img src="tikka.jfif" alt="Chicken tikka masala" class="recipe-card-img">
+                <div class="card-rating"><i class="ph-fill ph-star"></i><b>4.8</b></div>
+                <div class="recipe-card-overlay">
+                    <h3 class="recipe-card-title">Chicken Tikka Masala</h3>
+                    <div class="recipe-card-meta"><span><i class="ph ph-clock"></i> 1 hour</span></div>
+                </div>
+            </a>
+            <a href="home.html" class="recipe-card" data-reveal>
+                <img src="veg.jfif" alt="Vegetable stir fry" class="recipe-card-img">
+                <div class="card-rating"><i class="ph-fill ph-star"></i><b>4.6</b></div>
+                <div class="recipe-card-overlay">
+                    <h3 class="recipe-card-title">Vegetable Stir Fry</h3>
+                    <div class="recipe-card-meta"><span><i class="ph ph-clock"></i> 15 mins</span></div>
+                </div>
+            </a>
+            <a href="home.html" class="recipe-card" data-reveal>
+                <img src="cookies.jfif" alt="Chocolate chip cookies" class="recipe-card-img">
+                <div class="card-rating"><i class="ph-fill ph-star"></i><b>4.9</b></div>
+                <div class="recipe-card-overlay">
+                    <h3 class="recipe-card-title">Chocolate Chip Cookies</h3>
+                    <div class="recipe-card-meta"><span><i class="ph ph-clock"></i> 15 mins</span></div>
+                </div>
+            </a>
+        </div>
+    </section>
 
-            <div class="feature-card">
-                <div class="feature-icon">🛒</div>
-                <h3>Smart Grocery Cart</h3>
-                <p>Add ingredients directly to your interactive cart and manage your cooking prep with ease.</p>
+    <!-- ============ CTA ============ -->
+    <section class="max-w-5xl mx-auto w-full px-5 sm:px-8 pb-20">
+        <div class="relative overflow-hidden rounded-xl3 bg-gradient-to-br from-sage-500 to-sage-800 text-cream-100 px-8 py-14 text-center shadow-lift">
+            <div class="absolute -top-16 -left-10 w-64 h-64 rounded-full bg-cream-100/10 blur-2xl"></div>
+            <i class="ph-duotone ph-cooking-pot text-5xl mb-4 relative"></i>
+            <h2 class="font-display text-4xl sm:text-5xl mb-3 relative">Ready to set the table?</h2>
+            <p class="text-cream-100/80 text-lg mb-8 max-w-xl mx-auto relative">
+                Join free, save your favourites and never scroll past a recipe you can't eat again.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 relative">
+                <a href="sign.html" class="btn btn-cream btn-lg">Create your account <i class="ph-bold ph-arrow-right"></i></a>
+                <a href="welcome.html" class="btn btn-lg !text-cream-100 !border-cream-100/50 border-[1.5px] hover:!bg-cream-100/10">What is dished?</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="landing-footer">
-        <p>© 2026 dished. Savor Every Bite, Tailored for Every Table.</p>
+    <!-- ============ Footer ============ -->
+    <footer class="mt-auto bg-sage-900 text-cream-100/80">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 py-12 grid sm:grid-cols-[1.5fr_1fr_1fr] gap-8">
+            <div>
+                <a href="index.html" class="brand mb-3" aria-label="dished home"><img src="logo-cream.png" alt="dished" class="h-14"></a>
+                <p class="text-sm leading-relaxed max-w-xs">Savor every bite, tailored for every table.</p>
+            </div>
+            <div>
+                <h4 class="font-display text-lg text-cream-100 mb-3">Explore</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="home.html" class="hover:text-cream-100 transition">All recipes</a></li>
+                    <li><a href="home.html?filter=liked" class="hover:text-cream-100 transition">Liked recipes</a></li>
+                    <li><a href="welcome.html" class="hover:text-cream-100 transition">About dished</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-display text-lg text-cream-100 mb-3">Account</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="sign.html" class="hover:text-cream-100 transition">Sign in</a></li>
+                    <li><a href="sign.html" class="hover:text-cream-100 transition">Create account</a></li>
+                    <li><a href="home.html" class="hover:text-cream-100 transition">Continue as guest</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-cream-100/10 py-5 text-center text-sm">
+            © 2026 dished. A student design project.
+        </div>
     </footer>
+
+    <script>
+        /* Reveal sections as they scroll into view */
+        (function () {
+            var items = document.querySelectorAll('[data-reveal]');
+            if (!('IntersectionObserver' in window)) return;
+            items.forEach(function (el) { el.style.opacity = '0'; });
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    entry.target.style.opacity = '';
+                    entry.target.classList.add('animate-fade-up');
+                    io.unobserve(entry.target);
+                });
+            }, { threshold: 0.15 });
+            items.forEach(function (el) { io.observe(el); });
+        })();
+    </script>
 </body>
+
 </html>

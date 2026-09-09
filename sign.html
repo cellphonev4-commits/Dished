@@ -1,61 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dished</title>
+    <title>dished | Sign in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
-    </style>
 </head>
-<body>
-    <a href="index.html" style="display: flex; justify-content: center; text-decoration: none; margin-top: 40px; margin-bottom: 20px;">
-        <h1 style="font-size: 64px; color: #5b8266; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">dished</h1>
-    </a>
-    <div class="login-container">
-        <h2>Login to Dished</h2>
-       
-        
-        <form id="login-form">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" id="fullname" placeholder="Enter your name" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Username / Email</label>
-                <input type="text" id="username" placeholder="Enter your username" required>
-            </div>
-            
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
-            </div>
-             <button type="submit" class="login-btn">Login</button>
-            
-        </form>
-        <script>
-    const loginForm = document.getElementById('login-form');
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        const nameVal = document.getElementById('fullname').value;
-        const usernameVal = document.getElementById('username').value;
-        const passwordVal = document.getElementById('password').value;
-      
-        sessionStorage.setItem('loggedInName', nameVal);
-        sessionStorage.setItem('loggedInUser', usernameVal);
-        sessionStorage.setItem('loggedInPassword', passwordVal); 
-        window.location.href = 'home.html';
-    });
-</script>
 
-        <p>
-            Don't have an account? <a class="signin" href="auth.html" >Sign Up</a>
-        </p>
+<body class="bg-cream-100">
+    <div class="min-h-screen grid lg:grid-cols-[1.05fr_1fr]">
 
-        <a href="welcome.html" class="login-btn" style="display: block; text-decoration: none; width: 100%; box-sizing: border-box; margin-top: 15px;">What is dished?</a>
+        <!-- ============ Brand panel ============ -->
+        <section class="relative hidden lg:flex flex-col justify-between gap-8 p-10 xl:p-12 overflow-hidden bg-gradient-to-br from-sage-500 via-sage-600 to-sage-800 text-cream-100">
+            <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-cream-100/10 blur-2xl"></div>
+            <div class="absolute -bottom-32 -left-16 w-80 h-80 rounded-full bg-honey-400/10 blur-2xl"></div>
+
+            <a href="index.html" class="brand relative z-10" aria-label="dished home"><img src="logo-cream.png" alt="dished" class="h-20"></a>
+
+            <div class="relative z-10 max-w-md">
+                <span class="chip !bg-cream-100/15 !text-cream-100 mb-6">
+                    <i class="ph-duotone ph-leaf"></i> Allergy &amp; diet aware
+                </span>
+                <h1 class="font-display text-5xl leading-[1.12] mb-5">
+                    Every recipe,<br>tailored to <span class="text-cream-200 italic">your table.</span>
+                </h1>
+                <p class="text-cream-100/80 text-lg leading-relaxed">
+                    Sign in to save recipes, swap out anything you can't eat, and send the
+                    ingredients straight to your basket.
+                </p>
+
+                <div class="grid grid-cols-4 gap-3 mt-8">
+                    <img src="pasta.jfif" alt="" class="aspect-square w-full object-cover rounded-2xl border-2 border-cream-100/25 rotate-[-4deg] hover:rotate-0 transition">
+                    <img src="avacado.jfif" alt="" class="aspect-square w-full object-cover rounded-2xl border-2 border-cream-100/25 rotate-[3deg] hover:rotate-0 transition">
+                    <img src="tikka.jfif" alt="" class="aspect-square w-full object-cover rounded-2xl border-2 border-cream-100/25 rotate-[-2deg] hover:rotate-0 transition">
+                    <img src="cookies.jfif" alt="" class="aspect-square w-full object-cover rounded-2xl border-2 border-cream-100/25 rotate-[5deg] hover:rotate-0 transition">
+                </div>
+            </div>
+
+            <blockquote class="relative z-10 flex items-start gap-3 text-cream-100/75 max-w-md">
+                <i class="ph-fill ph-quotes text-2xl text-cream-100/40 shrink-0"></i>
+                <p class="text-[15px] leading-relaxed italic">
+                    Savor every bite, tailored for every table.
+                </p>
+            </blockquote>
+        </section>
+
+        <!-- ============ Auth panel ============ -->
+        <section class="flex items-center justify-center px-5 py-10 sm:px-10">
+            <div class="w-full max-w-[430px] animate-fade-up">
+
+                <div class="flex items-center justify-between mb-8">
+                    <a href="index.html" class="brand lg:hidden" aria-label="dished home"><img src="logo-sage.png" alt="dished" class="h-11"></a>
+                    <a href="index.html" class="btn btn-ghost btn-sm ml-auto">
+                        <i class="ph ph-arrow-left"></i> Back to site
+                    </a>
+                </div>
+
+                <h2 class="font-display text-4xl text-ink mb-1.5" id="auth-heading">Welcome back</h2>
+                <p class="text-muted mb-6" id="auth-sub">Sign in to pick up where your last recipe left off.</p>
+
+                <!-- Demo notice -->
+                <div class="flex items-start gap-3 p-3.5 mb-6 rounded-2xl bg-sage-50 border border-sage-200 text-[13.5px] leading-relaxed">
+                    <i class="ph-duotone ph-flask text-xl text-sage-500 shrink-0 mt-0.5"></i>
+                    <p class="text-sage-800">
+                        <strong class="font-semibold">Demo sign-in.</strong> There's no server, so
+                        accounts are stored in this browser only. Use the demo account or make one up.
+                    </p>
+                </div>
+
+                <!-- Tabs -->
+                <div role="tablist" class="grid grid-cols-2 p-1 mb-6 rounded-full bg-sage-50 border border-sage-100">
+                    <button role="tab" id="tab-signin" aria-selected="true" aria-controls="panel-signin"
+                        class="auth-tab py-2.5 rounded-full text-sm font-medium transition">Sign in</button>
+                    <button role="tab" id="tab-signup" aria-selected="false" aria-controls="panel-signup"
+                        class="auth-tab py-2.5 rounded-full text-sm font-medium transition">Create account</button>
+                </div>
+
+                <!-- ---------- Sign in ---------- -->
+                <form id="panel-signin" role="tabpanel" aria-labelledby="tab-signin" novalidate>
+                    <div class="field" data-field="email">
+                        <label class="field-label" for="si-email">Email or username</label>
+                        <div class="field-wrap">
+                            <i class="ph ph-envelope-simple"></i>
+                            <input id="si-email" class="input" type="text" autocomplete="username" placeholder="you@dished.app">
+                        </div>
+                        <p class="field-error"><i class="ph ph-warning-circle"></i><span>Enter your email or username.</span></p>
+                    </div>
+
+                    <div class="field" data-field="password">
+                        <div class="flex items-baseline justify-between">
+                            <label class="field-label" for="si-password">Password</label>
+                            <button type="button" class="text-[12.5px] text-sage-500 hover:underline mb-1.5" id="forgot-link">Forgot it?</button>
+                        </div>
+                        <div class="field-wrap">
+                            <i class="ph ph-lock"></i>
+                            <input id="si-password" class="input has-action" type="password" autocomplete="current-password" placeholder="••••••••">
+                            <button type="button" class="field-action" data-toggle-pass="si-password" aria-label="Show password">
+                                <i class="ph ph-eye"></i>
+                            </button>
+                        </div>
+                        <p class="field-error"><i class="ph ph-warning-circle"></i><span>Enter your password.</span></p>
+                    </div>
+
+                    <label class="flex items-center gap-2.5 mb-6 text-sm text-muted cursor-pointer select-none">
+                        <input type="checkbox" id="si-remember" class="w-4 h-4 accent-sage-500 rounded" checked>
+                        Keep me signed in on this device
+                    </label>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" id="si-submit">
+                        <span class="btn-label flex items-center gap-2"><i class="ph ph-sign-in"></i> Sign in</span>
+                    </button>
+
+                    <button type="button" class="btn btn-outline btn-block mt-3" id="use-demo">
+                        <i class="ph-duotone ph-magic-wand"></i> Fill in the demo account
+                    </button>
+                </form>
+
+                <!-- ---------- Sign up ---------- -->
+                <form id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" class="hidden" novalidate>
+                    <div class="field" data-field="name">
+                        <label class="field-label" for="su-name">Your name</label>
+                        <div class="field-wrap">
+                            <i class="ph ph-user"></i>
+                            <input id="su-name" class="input" type="text" autocomplete="name" placeholder="Nora Kareem">
+                        </div>
+                        <p class="field-error"><i class="ph ph-warning-circle"></i><span>What should other cooks call you?</span></p>
+                    </div>
+
+                    <div class="field" data-field="email">
+                        <label class="field-label" for="su-email">Email</label>
+                        <div class="field-wrap">
+                            <i class="ph ph-envelope-simple"></i>
+                            <input id="su-email" class="input" type="email" autocomplete="email" placeholder="you@dished.app">
+                        </div>
+                        <p class="field-error"><i class="ph ph-warning-circle"></i><span data-msg>Enter a valid email address.</span></p>
+                    </div>
+
+                    <div class="field" data-field="password">
+                        <label class="field-label" for="su-password">Password</label>
+                        <div class="field-wrap">
+                            <i class="ph ph-lock"></i>
+                            <input id="su-password" class="input has-action" type="password" autocomplete="new-password" placeholder="At least 6 characters">
+                            <button type="button" class="field-action" data-toggle-pass="su-password" aria-label="Show password">
+                                <i class="ph ph-eye"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2 mt-2">
+                            <div class="flex-1 h-1.5 rounded-full bg-sage-100 overflow-hidden">
+                                <div id="pw-bar" class="h-full w-0 rounded-full transition-all duration-300"></div>
+                            </div>
+                            <span id="pw-label" class="text-[12px] text-muted w-16 text-right">&nbsp;</span>
+                        </div>
+                        <p class="field-error"><i class="ph ph-warning-circle"></i><span>Use at least 6 characters.</span></p>
+                    </div>
+
+                    <label class="flex items-start gap-2.5 mb-6 text-sm text-muted cursor-pointer select-none">
+                        <input type="checkbox" id="su-terms" class="w-4 h-4 mt-0.5 accent-sage-500 rounded">
+                        <span>I understand this is a demo and my details stay in this browser.</span>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" id="su-submit">
+                        <span class="btn-label flex items-center gap-2"><i class="ph ph-chef-hat"></i> Create my account</span>
+                    </button>
+                </form>
+
+                <div class="flex items-center gap-3 my-6">
+                    <hr class="divider flex-1"><span class="text-xs uppercase tracking-widest text-muted">or</span><hr class="divider flex-1">
+                </div>
+
+                <a href="home.html" class="btn btn-ghost btn-block !border !border-sage-200">
+                    <i class="ph ph-compass"></i> Browse as a guest
+                </a>
+
+                <p class="text-center text-sm text-muted mt-6">
+                    New here? <a href="welcome.html" class="link-underline">See what dished does</a>
+                </p>
+            </div>
+        </section>
     </div>
 
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            var qs = Dished.qs, qsa = Dished.qsa;
+
+            /* ---------------- Tabs ---------------- */
+            var TABS = {
+                signin: {
+                    tab: qs('#tab-signin'), panel: qs('#panel-signin'),
+                    heading: 'Welcome back', sub: 'Sign in to pick up where your last recipe left off.'
+                },
+                signup: {
+                    tab: qs('#tab-signup'), panel: qs('#panel-signup'),
+                    heading: 'Join the table', sub: 'Share recipes, save favourites and cook around your allergies.'
+                }
+            };
+
+            function selectTab(key) {
+                Object.keys(TABS).forEach(function (k) {
+                    var t = TABS[k], on = k === key;
+                    t.tab.setAttribute('aria-selected', on ? 'true' : 'false');
+                    t.tab.classList.toggle('bg-sage-500', on);
+                    t.tab.classList.toggle('text-cream-100', on);
+                    t.tab.classList.toggle('shadow-soft', on);
+                    t.tab.classList.toggle('text-muted', !on);
+                    t.panel.classList.toggle('hidden', !on);
+                    if (on) {
+                        qs('#auth-heading').textContent = t.heading;
+                        qs('#auth-sub').textContent = t.sub;
+                    }
+                });
+            }
+            TABS.signin.tab.addEventListener('click', function () { selectTab('signin'); });
+            TABS.signup.tab.addEventListener('click', function () { selectTab('signup'); });
+            selectTab('signin');
+
+            /* ---------------- Field helpers ---------------- */
+            function fieldOf(input) { return input.closest('.field'); }
+
+            function fail(input, message) {
+                var field = fieldOf(input);
+                field.classList.add('is-invalid');
+                if (message) {
+                    var slot = field.querySelector('[data-msg]') || field.querySelector('.field-error span');
+                    if (slot) slot.textContent = message;
+                }
+                input.focus();
+                return false;
+            }
+
+            /* Clear the red as soon as they start fixing it */
+            qsa('.input').forEach(function (input) {
+                input.addEventListener('input', function () { fieldOf(input).classList.remove('is-invalid'); });
+            });
+
+            /* Password visibility */
+            qsa('[data-toggle-pass]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var input = qs('#' + btn.dataset.togglePass);
+                    var showing = input.type === 'text';
+                    input.type = showing ? 'password' : 'text';
+                    btn.innerHTML = '<i class="ph ph-eye' + (showing ? '' : '-slash') + '"></i>';
+                    btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+                });
+            });
+
+            /* Loading state on submit buttons */
+            function busy(btn, label) {
+                btn.dataset.rest = btn.innerHTML;
+                btn.setAttribute('aria-busy', 'true');
+                btn.disabled = true;
+                btn.innerHTML = '<span class="flex items-center gap-2"><i class="ph ph-spinner-gap animate-spin"></i> ' + label + '</span>';
+            }
+            function rest(btn) {
+                btn.removeAttribute('aria-busy');
+                btn.disabled = false;
+                btn.innerHTML = btn.dataset.rest;
+            }
+
+            /* ---------------- Sign in ---------------- */
+            var siEmail = qs('#si-email'), siPass = qs('#si-password'), siBtn = qs('#si-submit');
+
+            qs('#use-demo').addEventListener('click', function () {
+                siEmail.value = Dished.auth.demo.username;
+                siPass.value = Dished.auth.demo.password;
+                qsa('.field').forEach(function (f) { f.classList.remove('is-invalid'); });
+                Dished.toast('Demo account filled in. Hit sign in.', { type: 'info' });
+            });
+
+            qs('#forgot-link').addEventListener('click', function () {
+                Dished.toast('No passwords to recover in a demo. Use the demo account.', { type: 'info' });
+            });
+
+            TABS.signin.panel.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!siEmail.value.trim()) return fail(siEmail);
+                if (!siPass.value) return fail(siPass);
+
+                busy(siBtn, 'Checking…');
+                setTimeout(function () {
+                    var account = Dished.auth.find(siEmail.value);
+                    if (!account) {
+                        rest(siBtn);
+                        fail(siEmail, "No account here yet. Try Create account.");
+                        Dished.toast('That account does not exist in this browser.', { type: 'error' });
+                        return;
+                    }
+                    if (account.password !== siPass.value) {
+                        rest(siBtn);
+                        fail(siPass, 'That password does not match.');
+                        return;
+                    }
+                    Dished.auth.start(account, qs('#si-remember').checked);
+                    Dished.toast('Welcome back, ' + account.name.split(' ')[0] + '!');
+                    setTimeout(function () { window.location.href = 'home.html'; }, 550);
+                }, 700);
+            });
+
+            /* ---------------- Sign up ---------------- */
+            var suName = qs('#su-name'), suEmail = qs('#su-email'), suPass = qs('#su-password'), suBtn = qs('#su-submit');
+
+            var STRENGTH = [
+                { label: 'Too short', color: '#c94f4f', width: '25%' },
+                { label: 'Weak', color: '#e0a458', width: '50%' },
+                { label: 'Good', color: '#7ba68d', width: '75%' },
+                { label: 'Strong', color: '#5b8266', width: '100%' }
+            ];
+
+            function score(value) {
+                if (value.length < 6) return 0;
+                var points = 0;
+                if (value.length >= 10) points++;
+                if (/[A-Z]/.test(value) && /[a-z]/.test(value)) points++;
+                if (/\d/.test(value)) points++;
+                if (/[^A-Za-z0-9]/.test(value)) points++;
+                return Math.min(3, Math.max(1, points));
+            }
+
+            suPass.addEventListener('input', function () {
+                var bar = qs('#pw-bar'), label = qs('#pw-label');
+                if (!suPass.value) { bar.style.width = '0'; label.textContent = ''; return; }
+                var s = STRENGTH[score(suPass.value)];
+                bar.style.width = s.width;
+                bar.style.backgroundColor = s.color;
+                label.textContent = s.label;
+                label.style.color = s.color;
+            });
+
+            TABS.signup.panel.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!suName.value.trim()) return fail(suName);
+                if (!/^\S+@\S+\.\S+$/.test(suEmail.value.trim())) return fail(suEmail, 'Enter a valid email address.');
+                if (Dished.auth.find(suEmail.value)) return fail(suEmail, 'That email already has an account here.');
+                if (suPass.value.length < 6) return fail(suPass, 'Use at least 6 characters.');
+                if (!qs('#su-terms').checked) {
+                    return Dished.toast('Tick the box to continue.', { type: 'error' });
+                }
+
+                busy(suBtn, 'Setting your table…');
+                setTimeout(function () {
+                    var account = Dished.auth.register({
+                        name: suName.value.trim(),
+                        username: suEmail.value.trim(),
+                        password: suPass.value
+                    });
+                    Dished.auth.start(account, true);
+                    Dished.toast('Account created. Welcome to dished!');
+                    setTimeout(function () { window.location.href = 'home.html'; }, 600);
+                }, 850);
+            });
+
+            /* Prefill the remembered account */
+            var remembered = Dished.store.get(Dished.K.remember, null);
+            if (remembered) siEmail.value = remembered;
+        })();
+    </script>
 </body>
+
 </html>

@@ -4,852 +4,561 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dished - Recipe Details</title>
+    <title>dished | Recipe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
-    </style>
 </head>
 
-<body>
-    <button class="sidebar-menu-btn" aria-label="Open menu" onclick="document.querySelector('.profile-sidebar').classList.toggle('open')">☰</button>
-    <!-- Cart Sidebar -->
-    <div id="cart-sidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h3 class="cart-title">Your Cart</h3>
-            <button class="close-cart-btn" onclick="toggleCart()">×</button>
-        </div>
-        <div id="cart-items-container" class="cart-items">
-            <!-- Items loaded here -->
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cart-total-price">0 IQD</span>
-            </div>
-            <button class="checkout-btn" onclick="alert('Proceeding to checkout!')">Checkout</button>
-        </div>
-    </div>
-    <!-- Left Sidebar (matches layout of screen shot) -->
-    <div class="profile-sidebar">
-        <!-- Wordmark -->
-        <a href="index.html" style="display: flex; align-items: center; justify-content: center; text-decoration: none; margin-bottom: 20px;">
-            <h1 style="font-size: 38px; color: #fdfcd7; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">dished</h1>
-        </a>
-        <!-- Profile Picture -->
-        <div style="position: relative;">
-            <img id="profile-avatar" class="profile-avatar" src="guest img.jfif" style="cursor: pointer;" alt="Profile Picture" onclick="document.getElementById('profile-pic-input').click()" title="Click to change picture">
-            <input type="file" id="profile-pic-input" accept="image/*" style="display: none;">
-        </div>
+<body class="bg-cream-100">
+    <div class="lg:pl-[300px]">
+        <div class="max-w-6xl mx-auto px-5 md:px-8 pb-24">
 
-        <div class="profile-info">
-            <h2 id="show-name">Name</h2>
-            <p class="profile-username">@<span id="show-username">username</span></p>
-        </div>
+            <header id="topbar"></header>
 
-        <!-- Stats row underneath name -->
-        <div class="sidebar-stats">
-            <div class="stat-col">
-                <div class="stat-num">18</div>
-                <div class="stat-label">Reviews</div>
-            </div>
-            <div class="stat-col">
-                <div id="user-recipe-count" class="stat-num">0</div>
-                <div class="stat-label">Recipes</div>
-            </div>
-            <div class="stat-col">
-                <div class="stat-num">7</div>
-                <div class="stat-label">Lists</div>
-            </div>
-        </div>
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center gap-1.5 text-sm text-muted mb-6" aria-label="Breadcrumb">
+                <a href="home.html" class="hover:text-sage-600 transition flex items-center gap-1"><i class="ph ph-house"></i> Home</a>
+                <i class="ph ph-caret-right text-xs"></i>
+                <span id="crumb-category">Recipes</span>
+                <i class="ph ph-caret-right text-xs"></i>
+                <span class="text-ink font-medium truncate" id="crumb-title">Recipe</span>
+            </nav>
 
-        <!-- Navigation Links -->
-        <div class="sidebar-nav">
-            <a href="home.html" class="sidebar-nav-link active">Home</a>
-            <a href="#" class="sidebar-nav-link">Explore</a>
-            <a href="home.html" class="sidebar-nav-link">Add Recipe</a>
-            <a href="#" class="sidebar-nav-link">Lists</a>
-            <a href="home.html?filter=liked" class="sidebar-nav-link">Liked Recipes</a>
-            <a href="#" class="sidebar-nav-link">My Reviews</a>
-            <a href="#" class="sidebar-nav-link">Settings</a>
-        </div>
-
-        <!-- My Lists widget -->
-        <div class="sidebar-lists">
-            <h4>My Lists</h4>
-            <div class="sidebar-lists-item">
-                <span>Want to Try</span>
-                <span class="sidebar-lists-badge">8</span>
-            </div>
-            <div class="sidebar-lists-item">
-                <span>Made It</span>
-                <span class="sidebar-lists-badge">12</span>
-            </div>
-            <div class="sidebar-lists-item">
-                <span>Favorites</span>
-                <span class="sidebar-lists-badge">6</span>
-            </div>
-            <div class="sidebar-lists-item">
-                <span>Quick & Easy</span>
-                <span class="sidebar-lists-badge">5</span>
-            </div>
-        </div>
-
-        <button onclick="logout()" class="logout-btn">Logout</button>
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <!-- Header Navbar -->
-        <header class="main-header">
-            <h1 style="font-size: 32px; color: #5b8266; margin: 0; cursor: pointer; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);" onclick="window.location.href='home.html'">dished</h1>
-
-            <div class="header-search">
-                <input id="search-input" type="text" placeholder="Search recipes, ingredients, cuisines...">
-            </div>
-
-            <div class="header-links">
-                <a href="home.html" class="header-link">Home</a>
-                <a href="#" class="header-link">Explore</a>
-                <a href="#" class="header-link">Categories</a>
-                <a href="#" class="header-link">Community</a>
-            </div>
-
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="header-cart" onclick="toggleCart()">
-                    🛒 Cart
-                    <span id="cart-count-badge" class="cart-badge" style="display: none;">0</span>
-                </div>
-                <span style="cursor: pointer; font-size: 15px; color: #5b8266; font-weight: bold;">Alerts</span>
-                <div style="width: 32px; height: 32px; border-radius: 50%; border: 3px solid #fdfcd7; background: #fdfcd7; color: #5b8266; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">U</div>
-            </div>
-        </header>
-
-        <!-- Breadcrumbs -->
-        <div class="breadcrumbs">
-            <a href="home.html">Home</a> &gt; <span id="breadcrumb-category">Category</span> &gt; <span
-                id="breadcrumb-title" style="font-weight: bold; color: #333;">Recipe Title</span>
-        </div>
-
-        <!-- Recipe Main Panel Grid -->
-        <div class="recipe-detail-layout">
-            <!-- Left image -->
-            <div class="recipe-image-wrapper">
-                <img id="recipe-img" src="" alt="Recipe Image">
-                <button id="like-recipe-btn" class="recipe-fav-btn" style="font-size: 12px; font-weight: bold; color: #e06666;">Like</button>
-            </div>
-
-            <!-- Middle description -->
-            <div class="recipe-content-main">
-                <span id="recipe-category" class="category-tag">Category</span>
-                <h2 id="recipe-title" class="recipe-main-title">Recipe Title</h2>
-                <div class="recipe-author">by <span id="recipe-creator" style="font-weight: bold; cursor: pointer; text-decoration: underline;" onclick="goToProfile(this.innerText)">Author</span> <span
-                        id="verified-badge" style="color: #5b8266; font-size: 14px;">✔</span></div>
-
-                <div class="recipe-ratings">
-                    <span id="star-display">★★★★★</span>
-                    <span id="rating-number" style="font-weight: bold; color: #333;">4.6</span>
-                    <span id="reviews-count-txt" style="color: #777; font-size: 14px;">(128 reviews)</span>
+            <!-- ============ Hero ============ -->
+            <section class="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-6 lg:gap-9 mb-12 animate-fade-up">
+                <div class="relative rounded-xl3 overflow-hidden shadow-card bg-sage-50">
+                    <img id="recipe-img" src="" alt="" class="w-full h-[300px] sm:h-[420px] object-cover">
+                    <button id="like-btn" class="absolute top-4 right-4 btn-icon !w-11 !h-11 !text-xl shadow-card" aria-label="Like this recipe">
+                        <i class="ph ph-heart"></i>
+                    </button>
                 </div>
 
-                <p id="recipe-description" class="recipe-description">
-                    Loading description...
-                </p>
+                <div class="flex flex-col">
+                    <span class="chip self-start mb-3" id="recipe-category"><i class="ph ph-fork-knife"></i> Recipes</span>
+                    <h1 class="font-display text-4xl sm:text-5xl leading-tight text-ink mb-3" id="recipe-title">Recipe</h1>
 
-                <div class="recipe-action-btns">
-                    <button class="btn-primary-dished" onclick="scrollToReviews()">Add Review</button>
-                    <button class="btn-secondary-dished">Save to List</button>
-                </div>
-            </div>
-
-            <!-- Right stats card -->
-            <div class="recipe-stats-card">
-                <div class="stat-row">
-                    <span>Prep Time</span>
-                    <strong id="stat-prep">15 mins</strong>
-                </div>
-                <div class="stat-row">
-                    <span>Cook Time</span>
-                    <strong id="stat-cook">12 mins</strong>
-                </div>
-                <div class="stat-row">
-                    <span>Servings</span>
-                    <strong id="stat-servings">24 cookies</strong>
-                </div>
-                <div class="stat-row">
-                    <span>Difficulty</span>
-                    <strong id="stat-difficulty" style="color: #5b8266;">Easy</strong>
-                </div>
-
-                <div class="recipe-tags-grid" id="tags-container">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Ingredients and Instructions Grid -->
-        <div class="recipe-details-grid">
-            <div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <h3 class="details-section-title" style="margin: 0;">Ingredients</h3>
-                    <div style="display: flex; gap: 10px;">
-                        <button onclick="buyAllIngredients()" class="btn-primary-dished" style="padding: 4px 12px; font-size: 14px;">Buy All</button>
-                        <select id="measurement-toggle" style="padding: 4px 8px; border-radius: 4px; border: 1px solid #5b8266; font-family: inherit;">
-                            <option value="us">US Custom</option>
-                            <option value="metric">Metric</option>
-                        </select>
-                    </div>
-                </div>
-                <ul id="ingredients-list" class="ingredients-list-detail">
-                    <!-- Loaded dynamically -->
-                </ul>
-
-                <!-- Basic AI Allergy Substitution Box -->
-                <div class="allergy-sub-box" style="margin-top: 20px; border-top: 1px solid rgba(76, 157, 176, 0.2); padding-top: 15px;">
-                    <h4 style="font-size: 15px; color: #5b8266; margin-bottom: 8px;">Auto Allergy Substitution</h4>
-                    <div style="display: flex; gap: 8px; flex-direction: column;">
-                        <input type="text" id="allergy-input" placeholder="What are you allergic to? (e.g. Dairy, Gluten, Nuts)" style="padding: 8px; border: 1px solid #5b8266; border-radius: 6px; font-size: 14px; font-family: inherit;">
-                        
-                        <!-- Quick Select Allergy Pills -->
-                        <div class="allergy-quick-container">
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('dairy')">🥛 Dairy</button>
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('gluten')">🌾 Gluten</button>
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('nuts')">🥜 Nuts</button>
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('eggs')">🥚 Eggs</button>
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('soy')">🫘 Soy</button>
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('shellfish')">🦐 Shellfish</button>
-                            <button class="allergy-quick-pill" onclick="quickApplyAllergy('vegan')">🌱 Vegan</button>
-                        </div>
-
-                        <!-- Buttons row -->
-                        <div style="display: flex; gap: 8px; margin-top: 10px;">
-                            <button id="auto-sub-btn" class="btn-primary-dished" style="padding: 8px; font-size: 14px; border-radius: 6px; flex: 1;">Auto Substitute</button>
-                            <button id="reset-sub-btn" class="btn-secondary-dished" style="padding: 8px; font-size: 14px; border-radius: 6px; flex: 1;">Restart</button>
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
+                        <button class="flex items-center gap-2 text-[15px] group" id="creator-btn">
+                            <img id="creator-avatar" src="" alt="" class="w-8 h-8 rounded-full object-cover bg-sage-100">
+                            <span class="text-muted">by <span class="text-ink font-medium group-hover:text-sage-600 transition" id="recipe-creator">Author</span></span>
+                            <i class="ph-fill ph-seal-check text-sage-500" id="verified-badge"></i>
+                        </button>
+                        <div class="flex items-center gap-1.5 text-[15px]">
+                            <span class="flex gap-0.5 text-base" id="star-display"></span>
+                            <b id="rating-number">4.6</b>
+                            <span class="text-muted" id="reviews-count-txt">(0 reviews)</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div>
-                <h3 class="details-section-title">Instructions</h3>
-                <ol id="instructions-list" class="instructions-list-detail">
-                    <!-- Loaded dynamically -->
-                </ol>
-            </div>
-        </div>
 
-        <!-- Reviews / Comments Section -->
-        <div id="reviews-section" class="reviews-section-detail">
-            <div class="reviews-header-detail">
-                <h3 class="details-section-title" id="reviews-title">Reviews (128)</h3>
-                <select
-                    style="padding: 6px 12px; border-radius: 8px; border: 1px solid #5b8266; font-family: inherit; font-size: 14px;">
-                    <option>Most Recent</option>
-                    <option>Highest Rated</option>
-                    <option>Lowest Rated</option>
-                </select>
-            </div>
+                    <p class="text-[16px] leading-relaxed text-muted mb-6" id="recipe-description"></p>
 
-            <!-- Write a Review card -->
-            <div class="review-form-card">
-                <h4 style="margin-bottom: 12px; color: #5b8266;">Your Review</h4>
-                <form id="comment-form">
-                    <div class="review-rating-select">
-                        <span class="star-rating-select" data-value="1">★</span>
-                        <span class="star-rating-select" data-value="2">★</span>
-                        <span class="star-rating-select" data-value="3">★</span>
-                        <span class="star-rating-select" data-value="4">★</span>
-                        <span class="star-rating-select" data-value="5">★</span>
-                        <span style="font-size: 14px; color: #666; margin-left: 10px;">Select stars</span>
-                    </div>
-                    <textarea id="review-text" class="review-textarea-dished" placeholder="Write your review..."
-                        rows="3" required></textarea>
-                    <button type="submit" class="btn-primary-dished" style="font-size: 14px; padding: 8px 16px;">Submit
-                        Review</button>
-                </form>
-            </div>
-
-            <!-- List of comments/reviews -->
-            <div id="reviews-container" class="reviews-grid-detail">
-                <!-- Comments loaded dynamically -->
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const savedName = sessionStorage.getItem('loggedInName') || "Nora";
-        const savedUser = sessionStorage.getItem('loggedInUser') || "nora";
-        const savedPass = sessionStorage.getItem('loggedInPassword');
-
-        function esc(str) {
-            return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-        }
-
-        // Currency helpers — Iraqi Dinar (IQD)
-        const IQD_PER_USD = 1450;
-        function fmtIQD(n) {
-            const rounded = Math.ceil(n / 500) * 500;
-            return rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' IQD';
-        }
-        function parseIngredientPrice(text) {
-            const m = text.match(/-\s*\$?\s*([\d,]+(?:\.\d{1,2})?)\s*(?:IQD|د\.ع)?/i);
-            if (m) {
-                let val = parseFloat(m[1].replace(/,/g, ''));
-                if (m[0].includes('$')) val = val * IQD_PER_USD;
-                return { name: text.replace(m[0], '').trim(), price: Math.ceil(val / 500) * 500 };
-            }
-            return { name: text, price: Math.ceil(((text.length % 5) + 1.99) * IQD_PER_USD / 500) * 500 };
-        }
-
-        // Search box: pressing Enter jumps to the home page with the query applied
-        const searchInputEl = document.getElementById('search-input');
-        if (searchInputEl) {
-            searchInputEl.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const q = searchInputEl.value.trim();
-                    window.location.href = q ? 'home.html?q=' + encodeURIComponent(q) : 'home.html';
-                }
-            });
-        }
-
-        
-        document.getElementById('show-name').textContent = savedName;
-        document.getElementById('show-username').textContent = savedUser;
-
-        const profileAvatar = document.getElementById('profile-avatar');
-        const profilePicInput = document.getElementById('profile-pic-input');
-        
-        
-        const savedPic = localStorage.getItem('userProfilePic');
-        if (savedPic && profileAvatar) {
-            profileAvatar.src = savedPic;
-        }
-
-        if (profilePicInput && profileAvatar) {
-            profilePicInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const base64Str = event.target.result;
-                        profileAvatar.src = base64Str;
-                        localStorage.setItem('userProfilePic', base64Str);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-        
-        function updateUserStats() {
-            const recipeCountEl = document.getElementById('user-recipe-count');
-            if (recipeCountEl) {
-                const currentUser = savedName || savedUser || "Guest";
-                const allCurrentRecipes = JSON.parse(localStorage.getItem('dishedRecipes')) || [];
-                const userRecipesCount = allCurrentRecipes.filter(r => r.creator === currentUser).length;
-                recipeCountEl.textContent = userRecipesCount;
-            }
-        }
-        updateUserStats();
-
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = 'sign.html';
-        }
-
-        function scrollToReviews() {
-            document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function goToProfile(profileName) {
-            sessionStorage.setItem('viewingProfileName', profileName);
-            window.location.href = 'profile.html';
-        }
-
-        
-        const activeRecipeId = parseInt(sessionStorage.getItem('activeRecipeId'));
-        let recipes = JSON.parse(localStorage.getItem('dishedRecipes')) || [];
-        const featured = JSON.parse(localStorage.getItem('featuredRecipes')) || [];
-        
-        const allRecipes = recipes.concat(featured);
-
-        let activeRecipe = allRecipes.find(r => r.id === activeRecipeId);
-
-        if (!activeRecipe) {
-            activeRecipe = recipes[2] || recipes[0] || {
-                id: 3,
-                title: "Chocolate Chip Cookies",
-                imgUrl: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&auto=format&fit=crop",
-                ingredients: "Butter, White sugar, Brown sugar, Eggs, Vanilla extract, Flour, Baking soda, Chocolate chips",
-                instructions: "Preheat oven to 350°F (175°C). Cream butter and sugars. Add eggs and vanilla. Mix dry ingredients, stir into batter. Fold in chocolate chips. Bake for 10-12 minutes.",
-                creator: "Sally's Baking Recipes",
-                prepTime: "15 mins",
-                cookTime: "12 mins",
-                servings: "24 cookies",
-                difficulty: "Easy",
-                tags: "Cookies, Easy, Dessert, Popular",
-                description: "Crispy edges, soft center, and loaded with chocolate chips. The perfect classic cookie!",
-                category: "Dessert"
-            };
-        }
-
-        
-        document.getElementById('breadcrumb-title').textContent = activeRecipe.title;
-        document.getElementById('breadcrumb-category').textContent = activeRecipe.category || "Recipes";
-        document.getElementById('recipe-category').textContent = activeRecipe.category || "Recipes";
-        document.getElementById('recipe-title').textContent = activeRecipe.title;
-        document.getElementById('recipe-img').src = activeRecipe.imgUrl || 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&auto=format&fit=crop';
-        document.getElementById('recipe-creator').textContent = activeRecipe.creator || "Guest";
-        document.getElementById('recipe-description').textContent = activeRecipe.description || "A delicious, freshly shared home-cooked recipe.";
-
-        
-        const checkBadge = document.getElementById('verified-badge');
-        if (activeRecipe.creator !== "Sally's Baking Recipes" && activeRecipe.creator !== "Chef Maria") {
-            checkBadge.style.display = 'none';
-        }
-
-        
-        document.getElementById('stat-prep').textContent = activeRecipe.prepTime || "10 mins";
-        document.getElementById('stat-cook').textContent = activeRecipe.cookTime || "15 mins";
-        document.getElementById('stat-servings').textContent = activeRecipe.servings || "4 servings";
-        document.getElementById('stat-difficulty').textContent = activeRecipe.difficulty || "Easy";
-
-        
-        const tagsContainer = document.getElementById('tags-container');
-        const tagsArray = (activeRecipe.tags || "Home Cooked, Delicious").split(',');
-        tagsArray.forEach(tag => {
-            if (tag.trim().length > 0) {
-                const tagSpan = document.createElement('span');
-                tagSpan.className = 'recipe-tag';
-                tagSpan.textContent = tag.trim();
-                tagsContainer.appendChild(tagSpan);
-            }
-        });
-
-    
-        const ingredientsContainer = document.getElementById('ingredients-list');
-        const measurementToggle = document.getElementById('measurement-toggle');
-
-        if (measurementToggle) {
-        
-            measurementToggle.addEventListener('change', function() {
-                renderIngredientsList();
-            });
-        }
-
-        //measuments sytems starts here
-        function convertToMetric(ingredientText) {
-            let s = ingredientText;
-            
-        
-            s = s.replace("1/2", "0.5");
-            s = s.replace("1/4", "0.25");
-            s = s.replace("3/4", "0.75");
-            
-            // Replace cups with ml (1 cup = 240 ml)
-            s = s.replace(/([0-9.]+)\s*cup[s]?/gi, function(match, number) { return (number * 240) + " ml"; });
-            // Replace tbsp with ml (1 tbsp = 15 ml)
-            s = s.replace(/([0-9.]+)\s*tbsp/gi, function(match, number) { return (number * 15) + " ml"; });
-            // Replace tsp with ml (1 tsp = 5 ml)
-            s = s.replace(/([0-9.]+)\s*tsp/gi, function(match, number) { return (number * 5) + " ml"; });
-            // Replace lb with g (1 lb = 450 g)
-            s = s.replace(/([0-9.]+)\s*lb/gi, function(match, number) { return (number * 450) + " g"; });
-            // Replace oz with g (1 oz = 28 g)
-            s = s.replace(/([0-9.]+)\s*oz/gi, function(match, number) { return (number * 28) + " g"; });
-            
-            return s;
-        }
-
-        function renderIngredientsList() {
-            ingredientsContainer.innerHTML = '';
-            
-        
-            const isMetric = measurementToggle.value === 'metric';
-
-            activeRecipe.ingredients.split(',').forEach(ing => {
-                if (ing.trim().length > 0) {
-                    let textToDisplay = ing.trim();
-                    
-                    const parsedPrice = parseIngredientPrice(textToDisplay);
-                    textToDisplay = parsedPrice.name;
-                    let price = parsedPrice.price;
-
-                    if (isMetric) {
-                        textToDisplay = convertToMetric(textToDisplay);
-                    }
-
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <div class="ingredient-row">
-                            <div class="ingredient-left">${esc(textToDisplay)}</div>
-                            <div class="ingredient-buy-group">
-                                <span class="ingredient-price">${fmtIQD(price)}</span>
-                                <button class="add-to-cart-btn" data-name="${esc(textToDisplay)}" data-price="${price}" onclick="addToCart(this)">Add to Cart</button>
-                            </div>
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                        <div class="card !rounded-2xl p-3.5 text-center">
+                            <i class="ph-duotone ph-timer text-2xl text-sage-500"></i>
+                            <div class="font-display text-lg text-ink leading-tight mt-1" id="stat-prep">&nbsp;</div>
+                            <div class="text-[11px] uppercase tracking-wide text-muted">Prep</div>
                         </div>
-                    `;
-                    ingredientsContainer.appendChild(li);
-                }
-            });
-        }
+                        <div class="card !rounded-2xl p-3.5 text-center">
+                            <i class="ph-duotone ph-cooking-pot text-2xl text-sage-500"></i>
+                            <div class="font-display text-lg text-ink leading-tight mt-1" id="stat-cook">&nbsp;</div>
+                            <div class="text-[11px] uppercase tracking-wide text-muted">Cook</div>
+                        </div>
+                        <div class="card !rounded-2xl p-3.5 text-center">
+                            <i class="ph-duotone ph-users text-2xl text-sage-500"></i>
+                            <div class="font-display text-lg text-ink leading-tight mt-1" id="stat-servings">&nbsp;</div>
+                            <div class="text-[11px] uppercase tracking-wide text-muted">Serves</div>
+                        </div>
+                        <div class="card !rounded-2xl p-3.5 text-center">
+                            <i class="ph-duotone ph-chart-bar text-2xl text-sage-500"></i>
+                            <div class="font-display text-lg text-ink leading-tight mt-1" id="stat-difficulty">&nbsp;</div>
+                            <div class="text-[11px] uppercase tracking-wide text-muted">Level</div>
+                        </div>
+                    </div>
 
-        
-        renderIngredientsList();
+                    <div class="flex flex-wrap gap-2 mb-6" id="tags-container"></div>
 
-        let originalIngredients = "";
+                    <div class="flex flex-wrap gap-2.5 mt-auto">
+                        <button class="btn btn-primary" id="review-btn"><i class="ph ph-note-pencil"></i> Write a review</button>
+                        <button class="btn btn-outline" id="save-btn"><i class="ph ph-bookmark-simple"></i> Save to list</button>
+                        <button class="btn btn-ghost !border !border-sage-200" id="print-btn" aria-label="Print recipe"><i class="ph ph-printer"></i></button>
+                    </div>
+                </div>
+            </section>
 
-        function applySubstitution(allergyType) {
-            if (originalIngredients === "") {
-                originalIngredients = activeRecipe.ingredients;
-            }
+            <!-- ============ Ingredients + instructions ============ -->
+            <section class="grid lg:grid-cols-2 gap-8 lg:gap-10 mb-14">
 
-            const allergy = allergyType.toLowerCase().trim();
-            let substituted = false;
+                <!-- Ingredients -->
+                <div>
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                        <h2 class="section-title !text-2xl"><i class="ph-duotone ph-list-bullets"></i> Ingredients</h2>
+                        <div class="flex items-center gap-2">
+                            <select id="unit-toggle" class="select !py-1.5 !text-sm !w-auto" aria-label="Measurement system">
+                                <option value="us">US customary</option>
+                                <option value="metric">Metric</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm" id="buy-all"><i class="ph ph-basket"></i> Add all</button>
+                        </div>
+                    </div>
 
-            if (allergy.includes("dairy")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/Butter/ig, "Coconut Oil")
-                    .replace(/Milk/ig, "Oat Milk")
-                    .replace(/Heavy cream/ig, "Coconut Cream")
-                    .replace(/Feta cheese|Parmesan cheese|Cheese/ig, "Vegan Cheese");
-                substituted = true;
-            }
-            if (allergy.includes("gluten")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/Sourdough bread|Bread/ig, "Gluten-Free Bread")
-                    .replace(/Flour/ig, "1:1 Gluten-Free Flour")
-                    .replace(/Linguine|Fettuccine|Pasta/ig, "Gluten-Free Pasta");
-                substituted = true;
-            }
-            if (allergy.includes("nut")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/Peanut Butter/ig, "Sunflower Seed Butter")
-                    .replace(/Peanuts|Almonds|Walnuts|Cashews/ig, "Pumpkin Seeds");
-                substituted = true;
-            }
-            if (allergy.includes("egg")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/\bEgg\b|\bEggs\b/ig, "Flax Egg (1 tbsp ground flax + 3 tbsp water)");
-                substituted = true;
-            }
-            if (allergy.includes("soy")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/Soy sauce/ig, "Coconut Aminos");
-                substituted = true;
-            }
-            if (allergy.includes("shellfish") || allergy.includes("seafood") || allergy.includes("shrimp")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/Shrimp/ig, "King Oyster Mushrooms");
-                substituted = true;
-            }
-            if (allergy.includes("vegan") || allergy.includes("vegetarian") || allergy.includes("meat")) {
-                activeRecipe.ingredients = activeRecipe.ingredients
-                    .replace(/Chicken breast|Chicken/ig, "Plant-Based Chick'n")
-                    .replace(/Beef/ig, "Lentils & Mushrooms")
-                    .replace(/Butter/ig, "Olive Oil")
-                    .replace(/Milk/ig, "Oat Milk");
-                substituted = true;
-            }
+                    <ul id="ingredients-list" class="flex flex-col gap-2.5 mb-6"></ul>
 
-            if (substituted) {
-                alert(`Applied allergy substitutions for: ${allergyType}`);
-            } else {
-                alert(`No direct match for "${allergyType}". Try Dairy, Gluten, Nuts, Eggs, Soy, Shellfish, or Vegan.`);
-            }
-
-            renderIngredientsList();
-        }
-
-        function quickApplyAllergy(allergyType) {
-            document.getElementById('allergy-input').value = allergyType;
-            applySubstitution(allergyType);
-        }
-
-        const autoSubBtn = document.getElementById('auto-sub-btn');
-        if (autoSubBtn) {
-            autoSubBtn.addEventListener('click', function() {
-                const allergyVal = document.getElementById('allergy-input').value;
-                if (!allergyVal.trim()) {
-                    alert("Please select or type an allergy!");
-                    return;
-                }
-                applySubstitution(allergyVal);
-            });
-        }
-
-       
-        const resetSubBtn = document.getElementById('reset-sub-btn');
-        if (resetSubBtn) {
-            resetSubBtn.addEventListener('click', function() {
-              
-                if (originalIngredients !== "") {
-                  
-                    activeRecipe.ingredients = originalIngredients;
-                    
-                    
-                    renderIngredientsList();
-                    
-                    
-                    document.getElementById('allergy-input').value = '';
-                    alert("Restarted! Ingredients are back to normal.");
-                } else {
-                    alert("You haven't changed anything yet!");
-                }
-            });
-        }
-
-        
-        const instructionsContainer = document.getElementById('instructions-list');
-       
-        const steps = activeRecipe.instructions.split(/(?:\. |\n|; )/);
-        steps.forEach(step => {
-            if (step.trim().length > 3) {
-                const li = document.createElement('li');
-                li.textContent = step.trim() + ".";
-                instructionsContainer.appendChild(li);
-            }
-        });
-
-        
-        let currentRatingVal = 5;
-        const starSelects = document.querySelectorAll('.star-rating-select');
-
-        starSelects.forEach(star => {
-            star.addEventListener('click', (e) => {
-                currentRatingVal = parseInt(e.target.getAttribute('data-value'));
-                updateStarSelection(currentRatingVal);
-            });
-        });
-
-        function updateStarSelection(val) {
-            starSelects.forEach(star => {
-                const starVal = parseInt(star.getAttribute('data-value'));
-                if (starVal <= val) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-        }
-        updateStarSelection(currentRatingVal);
-
-        
-        const defaultReviews = [
-            {
-                user: "Layla",
-                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop",
-                date: "2 days ago",
-                rating: 5,
-                comment: "Super easy and delicious! My family loved it. Will make again."
-            },
-            {
-                user: "Omar",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop",
-                date: "1 week ago",
-                rating: 4,
-                comment: "Great recipe. I added a pinch of sea salt on top, amazing!"
-            },
-            {
-                user: "Hana",
-                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop",
-                date: "2 weeks ago",
-                rating: 5,
-                comment: "Turned out perfect!"
-            }
-        ];
-
-       
-        const reviewStorageKey = `reviews_recipe_${activeRecipe.id}`;
-        let recipeReviews = JSON.parse(localStorage.getItem(reviewStorageKey));
-
-        if (!recipeReviews) {
-            recipeReviews = defaultReviews;
-            localStorage.setItem(reviewStorageKey, JSON.stringify(recipeReviews));
-        }
-
-        const reviewsContainer = document.getElementById('reviews-container');
-        const reviewsTitle = document.getElementById('reviews-title');
-        const reviewsCountTxt = document.getElementById('reviews-count-txt');
-
-        function renderReviews() {
-            reviewsContainer.innerHTML = '';
-            reviewsTitle.textContent = `Reviews (${recipeReviews.length})`;
-            reviewsCountTxt.textContent = `(${recipeReviews.length} reviews)`;
-
-           
-            let sum = 0;
-            recipeReviews.forEach(r => sum += r.rating);
-            const avg = recipeReviews.length > 0 ? (sum / recipeReviews.length).toFixed(1) : "5.0";
-            document.getElementById('rating-number').textContent = avg;
-
-            
-            const fullStars = Math.round(parseFloat(avg));
-            let starStr = "";
-            for (let i = 1; i <= 5; i++) {
-                starStr += i <= fullStars ? "★" : "☆";
-            }
-            document.getElementById('star-display').textContent = starStr;
-
-            recipeReviews.forEach(review => {
-                const card = document.createElement('div');
-                card.className = 'review-comment-card';
-
-                let commentStars = "";
-                for (let i = 1; i <= 5; i++) {
-                    commentStars += i <= review.rating ? "★" : "☆";
-                }
-
-                card.innerHTML = `
-                    <div class="review-card-top">
-                        <div class="review-user-info">
-                            <img class="review-user-avatar" src="${esc(review.avatar || 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&auto=format&fit=crop')}" alt="avatar">
+                    <!-- Allergy panel -->
+                    <div class="card p-5">
+                        <div class="flex items-start gap-3 mb-4">
+                            <span class="w-10 h-10 rounded-xl bg-sage-50 text-sage-500 flex items-center justify-center shrink-0">
+                                <i class="ph-duotone ph-shield-check text-xl"></i>
+                            </span>
                             <div>
-                                <div class="review-user-name" data-user="${esc(review.user)}" style="cursor: pointer; text-decoration: underline;" onclick="goToProfile(this.dataset.user)">${esc(review.user)}</div>
-                                <div class="review-user-date">${esc(review.date)}</div>
+                                <h3 class="font-display text-xl text-ink leading-tight">Make it safe to eat</h3>
+                                <p class="text-[13.5px] text-muted mt-0.5">Pick anything you avoid and the list rewrites itself and marks every swap.</p>
                             </div>
                         </div>
-                        <div class="review-card-stars">${commentStars}</div>
-                    </div>
-                    <div class="review-comment-text">${esc(review.comment)}</div>
-                `;
-                reviewsContainer.appendChild(card);
-            });
-        }
 
-  
-        const commentForm = document.getElementById('comment-form');
-        commentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = document.getElementById('review-text').value;
+                        <div class="flex flex-wrap gap-2 mb-4" id="allergy-pills"></div>
 
-            const newReview = {
-                user: savedName || "Guest",
-                avatar: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&auto=format&fit=crop", // placeholder
-                date: "Just now",
-                rating: currentRatingVal,
-                comment: text
-            };
-
-            recipeReviews.unshift(newReview);
-            localStorage.setItem(reviewStorageKey, JSON.stringify(recipeReviews));
-
-            renderReviews();
-            commentForm.reset();
-            currentRatingVal = 5;
-            updateStarSelection(5);
-        });
-
-       
-        renderReviews();
-
-        
-        let likedRecipes = JSON.parse(localStorage.getItem('likedRecipes')) || [];
-        const likeBtn = document.getElementById('like-recipe-btn');
-        
-        function updateLikeBtnUI() {
-            if (likedRecipes.includes(activeRecipe.id)) {
-                likeBtn.textContent = "Liked ♥";
-                likeBtn.style.backgroundColor = "#e06666";
-                likeBtn.style.color = "white";
-            } else {
-                likeBtn.textContent = "Like";
-                likeBtn.style.backgroundColor = "white";
-                likeBtn.style.color = "#e06666";
-            }
-        }
-        
-        likeBtn.addEventListener('click', () => {
-            const index = likedRecipes.indexOf(activeRecipe.id);
-            if (index > -1) {
-                // Unlike
-                likedRecipes.splice(index, 1);
-            } else {
-                // Like
-                likedRecipes.push(activeRecipe.id);
-            }
-            localStorage.setItem('likedRecipes', JSON.stringify(likedRecipes));
-            updateLikeBtnUI();
-        });
-
-        updateLikeBtnUI();
-
-        // cart
-        let cart = JSON.parse(localStorage.getItem('dishedCart')) || [];
-
-        function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('open');
-        }
-
-        function updateCartUI() {
-            cart = JSON.parse(localStorage.getItem('dishedCart')) || [];
-            const container = document.getElementById('cart-items-container');
-            const totalEl = document.getElementById('cart-total-price');
-            const badge = document.getElementById('cart-count-badge');
-            
-            if (!container) return; 
-
-            container.innerHTML = '';
-            let total = 0;
-
-            if (cart.length === 0) {
-                container.innerHTML = '<p style="color: #666; text-align: center; margin-top: 20px;">Your cart is empty.</p>';
-                badge.style.display = 'none';
-            } else {
-                badge.style.display = 'block';
-                badge.textContent = cart.length;
-                cart.forEach((item, index) => {
-                    total += item.price;
-                    const el = document.createElement('div');
-                    el.className = 'cart-item';
-                    el.innerHTML = `
-                        <div class="cart-item-details">
-                            <span class="cart-item-name">${esc(item.name)}</span>
-                            <span class="cart-item-price">${fmtIQD(item.price)}</span>
+                        <div class="field !mb-3">
+                            <div class="field-wrap">
+                                <i class="ph ph-magnifying-glass"></i>
+                                <input id="allergy-input" class="input !py-2.5" placeholder="Or type it: dairy, gluten, nuts…">
+                            </div>
                         </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
-                    `;
-                    container.appendChild(el);
+
+                        <div class="flex gap-2">
+                            <button class="btn btn-primary btn-sm flex-1" id="apply-allergy"><i class="ph ph-arrows-clockwise"></i> Apply swap</button>
+                            <button class="btn btn-ghost btn-sm !border !border-sage-200" id="reset-allergy"><i class="ph ph-arrow-u-down-left"></i> Reset</button>
+                        </div>
+
+                        <p class="hidden items-center gap-2 mt-3 text-[13px] text-sage-700 bg-sage-50 rounded-xl px-3 py-2" id="swap-summary"></p>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div>
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <h2 class="section-title !text-2xl"><i class="ph-duotone ph-cooking-pot"></i> Instructions</h2>
+                        <span class="text-sm text-muted" id="steps-progress"></span>
+                    </div>
+                    <p class="text-[13.5px] text-muted mb-3 flex items-center gap-1.5">
+                        <i class="ph ph-hand-tap"></i> Tap a step to tick it off while you cook.
+                    </p>
+                    <ol id="instructions-list" class="flex flex-col gap-1"></ol>
+                </div>
+            </section>
+
+            <!-- ============ Reviews ============ -->
+            <section id="reviews-section">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                    <h2 class="section-title"><i class="ph-duotone ph-chat-circle-text"></i> <span id="reviews-title">Reviews</span></h2>
+                    <select id="reviews-sort" class="select !py-2 !text-sm !w-auto" aria-label="Sort reviews">
+                        <option value="recent">Most recent</option>
+                        <option value="highest">Highest rated</option>
+                        <option value="lowest">Lowest rated</option>
+                    </select>
+                </div>
+
+                <!-- Write a review -->
+                <form id="review-form" class="card p-5 mb-6">
+                    <h3 class="font-display text-xl text-ink mb-3">Your review</h3>
+                    <div class="flex flex-wrap items-center gap-3 mb-3">
+                        <div class="star-input" id="star-input" role="group" aria-label="Your rating"></div>
+                        <span class="text-sm text-muted" id="star-hint">Tap to rate</span>
+                    </div>
+                    <textarea id="review-text" class="textarea mb-3" rows="3" placeholder="How did it turn out? Any swaps you'd recommend?"></textarea>
+                    <div class="flex justify-end">
+                        <button type="submit" class="btn btn-primary"><i class="ph ph-paper-plane-tilt"></i> Post review</button>
+                    </div>
+                </form>
+
+                <div id="reviews-container" class="grid sm:grid-cols-2 gap-4"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            var qs = Dished.qs, qsa = Dished.qsa, esc = Dished.esc;
+
+            Dished.mountShell({ active: 'home' });
+            Dished.mountTopbar('#topbar');
+
+            /* ---------------- Which recipe? ---------------- */
+            var recipe = Dished.data.byId(sessionStorage.getItem('activeRecipeId')) || Dished.data.community()[0];
+            if (!recipe) { window.location.href = 'home.html'; return; }
+
+            document.title = 'dished | ' + recipe.title;
+
+            /* ---------------- Header fill ---------------- */
+            qs('#crumb-title').textContent = recipe.title;
+            qs('#crumb-category').textContent = recipe.category || 'Recipes';
+            qs('#recipe-category').innerHTML = '<i class="ph ph-fork-knife"></i>' + esc(recipe.category || 'Recipes');
+            qs('#recipe-title').textContent = recipe.title;
+            qs('#recipe-description').textContent = recipe.description || 'A delicious, freshly shared home-cooked recipe.';
+            qs('#recipe-creator').textContent = recipe.creator || 'Guest';
+            qs('#creator-avatar').src = Dished.avatar(recipe.creator || 'dished');
+
+            var img = qs('#recipe-img');
+            img.src = recipe.imgUrl || Dished.fallbackImg;
+            img.alt = recipe.title;
+            img.onerror = function () { img.src = Dished.fallbackImg; };
+
+            var VERIFIED = ["Sally's Baking Recipes", 'Chef Maria', 'Dished Editors'];
+            if (VERIFIED.indexOf(recipe.creator) === -1) qs('#verified-badge').style.display = 'none';
+
+            qs('#stat-prep').textContent = recipe.prepTime || '10 mins';
+            qs('#stat-cook').textContent = recipe.cookTime || '15 mins';
+            qs('#stat-servings').textContent = recipe.servings || '4 servings';
+            qs('#stat-difficulty').textContent = recipe.difficulty || 'Easy';
+
+            qs('#tags-container').innerHTML = String(recipe.tags || 'Home Cooked')
+                .split(',').map(function (t) { return t.trim(); }).filter(Boolean)
+                .map(function (t) { return '<span class="chip"><i class="ph ph-tag text-xs"></i>' + esc(t) + '</span>'; })
+                .join('');
+
+            qs('#creator-btn').addEventListener('click', function () { Dished.goToProfile(recipe.creator || 'Guest'); });
+            qs('#print-btn').addEventListener('click', function () { window.print(); });
+            qs('#save-btn').addEventListener('click', function () { Dished.picker.open(recipe.id); });
+            qs('#review-btn').addEventListener('click', function () {
+                qs('#reviews-section').scrollIntoView({ behavior: 'smooth' });
+                setTimeout(function () { qs('#review-text').focus(); }, 500);
+            });
+
+            var me = Dished.auth.current();
+
+            /* ---------------- Like ---------------- */
+            var likeBtn = qs('#like-btn');
+            function paintLike() {
+                var on = Dished.likes.has(recipe.id);
+                likeBtn.innerHTML = '<i class="ph' + (on ? '-fill' : '') + ' ph-heart"></i>';
+                likeBtn.classList.toggle('!bg-berry-500', on);
+                likeBtn.classList.toggle('!text-white', on);
+                likeBtn.classList.toggle('!border-berry-500', on);
+            }
+            likeBtn.addEventListener('click', function () {
+                var on = Dished.likes.toggle(recipe.id);
+                paintLike();
+                Dished.toast(on ? 'Added to your liked recipes' : 'Removed from liked recipes');
+            });
+            paintLike();
+
+            /* =================================================================
+               Ingredients: units, swaps and the basket
+               ============================================================== */
+            var BASE_INGREDIENTS = recipe.ingredients;
+
+            /* One table drives the pills, the free-text box and the rewriting */
+            var SWAPS = [
+                { key: 'dairy', label: 'Dairy', glyph: 'cow', aliases: ['milk', 'lactose'], rules: [
+                    [/Heavy cream/ig, 'Coconut Cream'], [/Sour cream/ig, 'Coconut Yoghurt'],
+                    [/Butter/ig, 'Coconut Oil'], [/Milk/ig, 'Oat Milk'],
+                    [/Feta cheese|Parmesan cheese|Pecorino Romano|Mozzarella|Cheese/ig, 'Vegan Cheese'],
+                    [/Plain yogurt/ig, 'Coconut Yoghurt']
+                ] },
+                { key: 'gluten', label: 'Gluten', glyph: 'grains-slash', aliases: ['wheat', 'celiac'], rules: [
+                    [/Sourdough bread|Bread/ig, 'Gluten-Free Bread'], [/Pizza dough/ig, 'Gluten-Free Pizza Dough'],
+                    [/Flour/ig, '1:1 Gluten-Free Flour'], [/Croutons/ig, 'Gluten-Free Croutons'],
+                    [/Linguine|Fettuccine|Spaghetti|Egg noodles|Pasta/ig, 'Gluten-Free Pasta']
+                ] },
+                { key: 'nuts', label: 'Nuts', glyph: 'acorn', aliases: ['peanut', 'almond'], rules: [
+                    [/Peanut Butter/ig, 'Sunflower Seed Butter'],
+                    [/Peanuts|Almonds|Walnuts|Cashews/ig, 'Pumpkin Seeds']
+                ] },
+                { key: 'eggs', label: 'Eggs', glyph: 'egg', aliases: ['egg'], rules: [
+                    [/Egg yolks/ig, 'Silken Tofu'], [/\bEggs\b|\bEgg\b/ig, 'Flax Egg (1 tbsp flax + 3 tbsp water)']
+                ] },
+                { key: 'soy', label: 'Soy', glyph: 'plant', aliases: ['soya'], rules: [
+                    [/Soy sauce/ig, 'Coconut Aminos'], [/Tofu/ig, 'Chickpeas']
+                ] },
+                { key: 'shellfish', label: 'Shellfish', glyph: 'shrimp', aliases: ['seafood', 'shrimp', 'prawn'], rules: [
+                    [/Large shrimp|Shrimp/ig, 'King Oyster Mushrooms']
+                ] },
+                { key: 'vegan', label: 'Vegan', glyph: 'leaf', aliases: ['vegetarian', 'meat', 'plant'], rules: [
+                    [/Chicken breasts|Chicken breast|Chicken/ig, "Plant-Based Chick'n"],
+                    [/Beef sirloin|Beef broth|Beef/ig, 'Lentils & Mushrooms'],
+                    [/Guanciale or Pancetta|Guanciale|Pancetta/ig, 'Smoked Mushrooms'],
+                    [/Large shrimp|Shrimp/ig, 'King Oyster Mushrooms'],
+                    [/Butter/ig, 'Olive Oil'], [/Milk/ig, 'Oat Milk'],
+                    [/Heavy cream/ig, 'Coconut Cream'],
+                    [/Feta cheese|Parmesan cheese|Pecorino Romano|Cheese/ig, 'Vegan Cheese']
+                ] }
+            ];
+
+            var prefs = Dished.settings.get();
+            qs('#unit-toggle').value = prefs.units || 'us';
+
+            /* Whatever the cook saved in Settings is already applied when the page opens */
+            var active = (prefs.avoid || []).filter(function (key) {
+                return SWAPS.some(function (sw) { return sw.key === key; });
+            });
+
+            qs('#allergy-pills').innerHTML = SWAPS.map(function (s) {
+                return '<button class="pill btn-sm' + (active.indexOf(s.key) > -1 ? ' is-active' : '') +
+                    '" data-swap="' + s.key + '"><i class="ph ph-' + s.glyph + '"></i>' + s.label + '</button>';
+            }).join('');
+
+            function currentIngredients() {
+                return active.reduce(function (text, key) {
+                    var swap = SWAPS.filter(function (s) { return s.key === key; })[0];
+                    if (!swap) return text;
+                    return swap.rules.reduce(function (t, rule) { return t.replace(rule[0], rule[1]); }, text);
+                }, BASE_INGREDIENTS);
+            }
+
+            function toMetric(text) {
+                return text
+                    .replace(/1\/2/g, '0.5').replace(/1\/4/g, '0.25').replace(/3\/4/g, '0.75').replace(/1\/3/g, '0.33')
+                    .replace(/([0-9.]+)\s*cups?/gi, function (m, n) { return Math.round(n * 240) + ' ml'; })
+                    .replace(/([0-9.]+)\s*tbsp/gi, function (m, n) { return Math.round(n * 15) + ' ml'; })
+                    .replace(/([0-9.]+)\s*tsp/gi, function (m, n) { return Math.round(n * 5) + ' ml'; })
+                    .replace(/([0-9.]+)\s*lb/gi, function (m, n) { return Math.round(n * 450) + ' g'; })
+                    .replace(/([0-9.]+)\s*oz/gi, function (m, n) { return Math.round(n * 28) + ' g'; });
+            }
+
+            function ingredientRows() {
+                var base = BASE_INGREDIENTS.split(',');
+                var live = currentIngredients().split(',');
+                var metric = qs('#unit-toggle').value === 'metric';
+
+                return live.map(function (entry, i) {
+                    var text = entry.trim();
+                    if (!text) return null;
+                    var parsed = Dished.money.parse(text);
+                    var label = metric ? toMetric(parsed.name) : parsed.name;
+                    return {
+                        label: label,
+                        price: parsed.price,
+                        swapped: (base[i] || '').trim() !== text
+                    };
+                }).filter(Boolean);
+            }
+
+            function renderIngredients() {
+                var list = qs('#ingredients-list');
+                list.innerHTML = ingredientRows().map(function (row) {
+                    return '<li class="ingredient-row' + (row.swapped ? ' is-swapped' : '') + '">' +
+                        '<div class="flex items-center gap-2.5 min-w-0">' +
+                        (row.swapped
+                            ? '<i class="ph-fill ph-arrows-clockwise text-sage-500 shrink-0" title="Swapped for you"></i>'
+                            : '<i class="ph ph-circle text-[8px] text-sage-300 shrink-0"></i>') +
+                        '<span class="text-[15px]">' + esc(row.label) + '</span></div>' +
+                        '<div class="flex items-center gap-2 shrink-0">' +
+                        '<span class="text-[13px] text-muted">' + Dished.money.format(row.price) + '</span>' +
+                        '<button class="btn-icon !w-8 !h-8 !text-base" data-add="' + esc(row.label) + '" data-price="' + row.price + '" aria-label="Add ' + esc(row.label) + ' to basket">' +
+                        '<i class="ph ph-plus"></i></button>' +
+                        '</div></li>';
+                }).join('');
+
+                qsa('[data-add]', list).forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        Dished.cart.add(btn.dataset.add, Number(btn.dataset.price));
+                        Dished.cart.open();
+                    });
+                });
+
+                var swaps = ingredientRows().filter(function (r) { return r.swapped; }).length;
+                var summary = qs('#swap-summary');
+                if (swaps) {
+                    summary.className = 'flex items-center gap-2 mt-3 text-[13px] text-sage-700 bg-sage-50 rounded-xl px-3 py-2';
+                    summary.innerHTML = '<i class="ph-fill ph-check-circle"></i> ' + swaps +
+                        (swaps === 1 ? ' ingredient' : ' ingredients') + ' swapped for ' +
+                        active.map(function (k) { return k; }).join(' + ') + '.';
+                } else {
+                    summary.className = 'hidden';
+                }
+            }
+
+            function setSwap(key, on) {
+                var i = active.indexOf(key);
+                if (on && i === -1) active.push(key);
+                if (!on && i > -1) active.splice(i, 1);
+                var pill = qs('[data-swap="' + key + '"]');
+                if (pill) pill.classList.toggle('is-active', active.indexOf(key) > -1);
+                renderIngredients();
+            }
+
+            qs('#allergy-pills').addEventListener('click', function (e) {
+                var pill = e.target.closest('[data-swap]');
+                if (!pill) return;
+                var key = pill.dataset.swap;
+                var on = active.indexOf(key) === -1;
+                setSwap(key, on);
+                Dished.toast(on ? SWAPS.filter(function (s) { return s.key === key; })[0].label + ' swapped out'
+                                : 'Swap removed', { type: 'info' });
+            });
+
+            qs('#apply-allergy').addEventListener('click', function () {
+                var typed = qs('#allergy-input').value.trim().toLowerCase();
+                if (!typed) return Dished.toast('Pick one above or type what you avoid.', { type: 'error' });
+
+                var found = SWAPS.filter(function (s) {
+                    return typed.indexOf(s.key) > -1 || s.aliases.some(function (a) { return typed.indexOf(a) > -1; });
+                });
+                if (!found.length) {
+                    return Dished.toast('No swap for “' + typed + '”. Try dairy, gluten, nuts, eggs, soy, shellfish or vegan.', { type: 'error' });
+                }
+                found.forEach(function (s) { setSwap(s.key, true); });
+                qs('#allergy-input').value = '';
+                Dished.toast('Applied: ' + found.map(function (s) { return s.label; }).join(', '));
+            });
+
+            qs('#reset-allergy').addEventListener('click', function () {
+                if (!active.length) return Dished.toast('Nothing has been swapped yet.', { type: 'info' });
+                active = [];
+                qsa('[data-swap]').forEach(function (p) { p.classList.remove('is-active'); });
+                qs('#allergy-input').value = '';
+                renderIngredients();
+                Dished.toast('Back to the original ingredients');
+            });
+
+            qs('#unit-toggle').addEventListener('change', renderIngredients);
+
+            qs('#buy-all').addEventListener('click', function () {
+                Dished.cart.addMany(ingredientRows().map(function (r) { return { name: r.label, price: r.price }; }));
+                Dished.cart.open();
+            });
+
+            renderIngredients();
+
+            /* =================================================================
+               Instructions
+               ============================================================== */
+            var steps = String(recipe.instructions || '').split(/(?:\.\s|\n|;\s)/)
+                .map(function (s) { return s.trim(); })
+                .filter(function (s) { return s.length > 3; });
+
+            var stepsList = qs('#instructions-list');
+            stepsList.innerHTML = steps.map(function (step, i) {
+                return '<li class="step-row cursor-pointer select-none" data-step="' + i + '">' +
+                    '<span class="step-num">' + (i + 1) + '</span>' +
+                    '<span class="step-text text-[15px] leading-relaxed pt-1">' + esc(step.replace(/\.$/, '')) + '.</span>' +
+                    '</li>';
+            }).join('');
+
+            function paintProgress() {
+                var done = qsa('.step-row.is-done', stepsList).length;
+                qs('#steps-progress').textContent = done + ' of ' + steps.length + ' done';
+            }
+            stepsList.addEventListener('click', function (e) {
+                var row = e.target.closest('.step-row');
+                if (!row) return;
+                row.classList.toggle('is-done');
+                var num = row.querySelector('.step-num');
+                num.innerHTML = row.classList.contains('is-done')
+                    ? '<i class="ph-bold ph-check text-sm"></i>'
+                    : (Number(row.dataset.step) + 1);
+                paintProgress();
+            });
+            paintProgress();
+
+            /* =================================================================
+               Reviews
+               ============================================================== */
+            var reviews = Dished.ratings.ensure(recipe.id);
+            var myName = me.isGuest ? 'Guest' : me.name;
+
+            function reviewAuthor(review) { return review.mine ? myName : review.user; }
+
+            /* Star picker ------------------------------------------------- */
+            var rating = 0;
+            var starInput = qs('#star-input');
+            starInput.innerHTML = [1, 2, 3, 4, 5].map(function (n) {
+                return '<button type="button" data-star="' + n + '" aria-label="' + n + ' star' + (n > 1 ? 's' : '') + '"><i class="ph-fill ph-star"></i></button>';
+            }).join('');
+
+            var STAR_WORDS = ['Tap to rate', 'Not for me', 'It was okay', 'Pretty good', 'Really good', 'Perfect!'];
+            function paintStars(value) {
+                qsa('[data-star]', starInput).forEach(function (b) {
+                    b.classList.toggle('is-on', Number(b.dataset.star) <= value);
+                });
+                qs('#star-hint').textContent = STAR_WORDS[value] || STAR_WORDS[0];
+            }
+            starInput.addEventListener('click', function (e) {
+                var b = e.target.closest('[data-star]');
+                if (!b) return;
+                rating = Number(b.dataset.star);
+                paintStars(rating);
+            });
+            starInput.addEventListener('mouseover', function (e) {
+                var b = e.target.closest('[data-star]');
+                if (b) paintStars(Number(b.dataset.star));
+            });
+            starInput.addEventListener('mouseleave', function () { paintStars(rating); });
+            paintStars(0);
+
+            /* List -------------------------------------------------------- */
+            function sortedReviews() {
+                var copy = reviews.slice();
+                var mode = qs('#reviews-sort').value;
+                if (mode === 'highest') copy.sort(function (a, b) { return b.rating - a.rating; });
+                if (mode === 'lowest') copy.sort(function (a, b) { return a.rating - b.rating; });
+                return copy;
+            }
+
+            function renderReviews() {
+                var container = qs('#reviews-container');
+                qs('#reviews-title').textContent = 'Reviews (' + reviews.length + ')';
+                qs('#reviews-count-txt').textContent = '(' + reviews.length + (reviews.length === 1 ? ' review)' : ' reviews)');
+
+                var avg = reviews.length
+                    ? reviews.reduce(function (a, r) { return a + Number(r.rating); }, 0) / reviews.length
+                    : 0;
+                qs('#rating-number').textContent = avg.toFixed(1);
+                qs('#star-display').innerHTML = Dished.ratings.stars(avg);
+
+                if (!reviews.length) {
+                    return Dished.emptyState(container, 'chat-circle-text', 'No reviews yet', 'Be the first to say how it went.');
+                }
+
+                container.innerHTML = sortedReviews().map(function (review) {
+                    var who = reviewAuthor(review);
+                    return '<article class="card p-5' + (review.mine ? ' border-sage-300 bg-sage-50/50' : '') + '">' +
+                        '<div class="flex items-start justify-between gap-3 mb-3">' +
+                        '<div class="flex items-center gap-3">' +
+                        '<img src="' + esc(Dished.avatar(who)) + '" alt="" class="w-10 h-10 rounded-full object-cover bg-sage-100">' +
+                        '<div><button class="font-medium hover:text-sage-600 transition" data-user="' + esc(who) + '">' + esc(who) + '</button>' +
+                        (review.mine ? '<span class="chip !py-0 !text-[11px] ml-2">You</span>' : '') +
+                        '<div class="text-xs text-muted">' + esc(review.date) + '</div></div></div>' +
+                        '<div class="flex gap-0.5 text-sm">' + Dished.ratings.stars(review.rating) + '</div>' +
+                        '</div>' +
+                        '<p class="text-[15px] leading-relaxed text-muted">' + esc(review.comment) + '</p>' +
+                        '</article>';
+                }).join('');
+
+                qsa('[data-user]', container).forEach(function (btn) {
+                    btn.addEventListener('click', function () { Dished.goToProfile(btn.dataset.user); });
                 });
             }
-            totalEl.textContent = fmtIQD(total);
-        }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            localStorage.setItem('dishedCart', JSON.stringify(cart));
-            updateCartUI();
-        }
+            qs('#reviews-sort').addEventListener('change', renderReviews);
 
-        function addToCart(btn) {
-            const name = btn.dataset.name;
-            const price = parseFloat(btn.dataset.price) || 0;
-            cart.push({ name: name, price: price });
-            localStorage.setItem('dishedCart', JSON.stringify(cart));
-            updateCartUI();
-            
-            document.getElementById('cart-sidebar').classList.add('open');
-        }
-        
-        function buyAllIngredients() {
-            activeRecipe.ingredients.split(',').forEach(ing => {
-                if (ing.trim().length > 0) {
-                    let textToDisplay = ing.trim();
-                    const parsedPrice = parseIngredientPrice(textToDisplay);
-                    textToDisplay = parsedPrice.name;
-                    let price = parsedPrice.price;
-                    
-                    const isMetric = measurementToggle && measurementToggle.value === 'metric';
-                    if (isMetric) {
-                        textToDisplay = convertToMetric(textToDisplay);
-                    }
+            qs('#review-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var text = qs('#review-text').value.trim();
+                if (!rating) return Dished.toast('Pick a star rating first.', { type: 'error' });
+                if (!text) return Dished.toast('Tell people how it went.', { type: 'error' });
 
-                    cart.push({ name: textToDisplay, price: price });
-                }
+                reviews.unshift({
+                    user: myName,
+                    mine: true,
+                    date: 'Just now',
+                    rating: rating,
+                    comment: text
+                });
+                Dished.ratings.saveReviews(recipe.id, reviews);
+                qs('#review-text').value = '';
+                rating = 0;
+                paintStars(0);
+                renderReviews();
+                Dished.toast('Thanks for the review!');
             });
-            localStorage.setItem('dishedCart', JSON.stringify(cart));
-            updateCartUI();
-            document.getElementById('cart-sidebar').classList.add('open');
-        }
 
-        updateCartUI();
+            renderReviews();
+        })();
     </script>
 </body>
 

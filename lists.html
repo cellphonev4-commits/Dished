@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dished | My lists</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-cream-100">
+    <div class="lg:pl-[300px]">
+        <div class="max-w-6xl mx-auto px-5 md:px-8 pb-24">
+
+            <header id="topbar"></header>
+
+            <!-- ===== All lists ===== -->
+            <section id="view-all">
+                <div class="flex flex-wrap items-end justify-between gap-4 mb-7 animate-fade-up">
+                    <div>
+                        <h1 class="font-display text-4xl sm:text-5xl text-ink">My lists</h1>
+                        <p class="text-muted mt-1.5" id="lists-summary">Collections you keep coming back to.</p>
+                    </div>
+                    <button class="btn btn-primary" id="new-list-btn"><i class="ph ph-plus"></i> New list</button>
+                </div>
+
+                <!-- Inline create -->
+                <form id="new-list-form" class="card p-4 mb-6 hidden">
+                    <label class="field-label" for="new-list-name">Name your list</label>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="field-wrap flex-1 min-w-[220px]">
+                            <i class="ph ph-notepad"></i>
+                            <input id="new-list-name" class="input" placeholder="Ramadan table, Sunday baking, Meal prep…">
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="ph ph-check"></i> Create</button>
+                        <button type="button" class="btn btn-ghost" id="cancel-list">Cancel</button>
+                    </div>
+                </form>
+
+                <div id="lists-grid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+            </section>
+
+            <!-- ===== One list ===== -->
+            <section id="view-one" class="hidden">
+                <a href="lists.html" class="btn btn-ghost btn-sm mb-4 -ml-3"><i class="ph ph-arrow-left"></i> All lists</a>
+
+                <div class="flex flex-wrap items-end justify-between gap-4 mb-7">
+                    <div>
+                        <h1 class="font-display text-4xl sm:text-5xl text-ink flex items-center gap-3" id="one-title">List</h1>
+                        <p class="text-muted mt-1.5" id="one-note"></p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-outline btn-sm" id="one-add"><i class="ph ph-plus"></i> Add recipes</button>
+                        <button class="btn btn-danger btn-sm" id="one-delete"><i class="ph ph-trash"></i> Delete list</button>
+                    </div>
+                </div>
+
+                <div id="one-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            var qs = Dished.qs, qsa = Dished.qsa, esc = Dished.esc, icon = Dished.icon;
+
+            Dished.mountShell({ active: 'lists' });
+            Dished.mountTopbar('#topbar');
+
+            var openId = new URLSearchParams(location.search).get('list');
+
+            /* ---------------- All lists ---------------- */
+            function coverFor(list) {
+                var recipes = Dished.lists.recipesIn(list.id).slice(0, 4);
+                if (!recipes.length) {
+                    return '<div class="h-32 rounded-2xl bg-sage-50 flex items-center justify-center text-sage-300">' +
+                        icon('image-square', 'text-4xl', 'duotone') + '</div>';
+                }
+                while (recipes.length < 4) recipes = recipes.concat(recipes);
+                return '<div class="h-32 rounded-2xl overflow-hidden grid grid-cols-2 grid-rows-2 gap-0.5">' +
+                    recipes.slice(0, 4).map(function (r) {
+                        return '<img src="' + esc(r.imgUrl || Dished.fallbackImg) + '" alt="" class="w-full h-full object-cover">';
+                    }).join('') + '</div>';
+            }
+
+            function renderAll() {
+                var all = Dished.lists.all();
+                var grid = qs('#lists-grid');
+                var total = all.reduce(function (a, l) { return a + l.recipes.length; }, 0);
+                qs('#lists-summary').textContent = all.length + (all.length === 1 ? ' list, ' : ' lists, ') +
+                    total + ' saved recipes.';
+
+                grid.innerHTML = all.map(function (l) {
+                    return '<article class="card p-4 hover:-translate-y-1 hover:shadow-lift transition duration-300 cursor-pointer" data-open="' + esc(l.id) + '">' +
+                        coverFor(l) +
+                        '<div class="flex items-start justify-between gap-3 mt-4">' +
+                          '<div class="min-w-0">' +
+                            '<h2 class="font-display text-xl text-ink flex items-center gap-2">' + icon(l.glyph, 'text-sage-500') + esc(l.name) + '</h2>' +
+                            '<p class="text-[13.5px] text-muted mt-0.5 truncate">' + esc(l.note || '') + '</p>' +
+                          '</div>' +
+                          '<span class="chip shrink-0">' + l.recipes.length + '</span>' +
+                        '</div></article>';
+                }).join('');
+
+                qsa('[data-open]', grid).forEach(function (card) {
+                    card.addEventListener('click', function () {
+                        window.location.href = 'lists.html?list=' + encodeURIComponent(card.dataset.open);
+                    });
+                });
+            }
+
+            /* ---------------- Create ---------------- */
+            var form = qs('#new-list-form');
+            qs('#new-list-btn').addEventListener('click', function () {
+                form.classList.toggle('hidden');
+                if (!form.classList.contains('hidden')) qs('#new-list-name').focus();
+            });
+            qs('#cancel-list').addEventListener('click', function () { form.classList.add('hidden'); });
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var name = qs('#new-list-name').value.trim();
+                if (!name) return Dished.toast('Give the list a name first.', { type: 'error' });
+                Dished.lists.create(name);
+                form.reset();
+                form.classList.add('hidden');
+                renderAll();
+                Dished.toast('“' + name + '” created');
+            });
+
+            /* ---------------- One list ---------------- */
+            function renderOne(list) {
+                qs('#view-all').classList.add('hidden');
+                qs('#view-one').classList.remove('hidden');
+                document.title = 'dished | ' + list.name;
+
+                qs('#one-title').innerHTML = icon(list.glyph, 'text-sage-500', 'duotone') + esc(list.name);
+                qs('#one-note').textContent = (list.note || '') + ' · ' + list.recipes.length +
+                    (list.recipes.length === 1 ? ' recipe' : ' recipes');
+
+                var grid = qs('#one-grid');
+                var recipes = Dished.lists.recipesIn(list.id);
+                grid.innerHTML = '';
+
+                if (!recipes.length) {
+                    Dished.emptyState(grid, 'bookmark-simple', 'Nothing saved here yet',
+                        'Open a recipe and use Save to list to drop it in.');
+                    return;
+                }
+
+                recipes.forEach(function (recipe, i) {
+                    var card = Dished.recipeCard(recipe, {
+                        deletable: true,
+                        onDelete: function (r) {
+                            Dished.lists.toggleRecipe(list.id, r.id);
+                            renderOne(Dished.lists.byId(list.id));
+                            Dished.toast('Removed from ' + list.name, {
+                                action: {
+                                    label: 'Undo',
+                                    fn: function () {
+                                        Dished.lists.toggleRecipe(list.id, r.id);
+                                        renderOne(Dished.lists.byId(list.id));
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    card.style.animationDelay = Math.min(i * 40, 320) + 'ms';
+                    card.classList.add('animate-fade-up');
+                    grid.appendChild(card);
+                });
+            }
+
+            qs('#one-add').addEventListener('click', function () { window.location.href = 'home.html'; });
+            qs('#one-delete').addEventListener('click', function () {
+                var list = Dished.lists.byId(openId);
+                if (!list) return;
+                var snapshot = Dished.lists.all();
+                Dished.lists.remove(openId);
+                Dished.toast('“' + list.name + '” deleted', {
+                    action: { label: 'Undo', fn: function () { Dished.lists.save(snapshot); window.location.reload(); } }
+                });
+                setTimeout(function () { window.location.href = 'lists.html'; }, 900);
+            });
+
+            /* ---------------- Boot ---------------- */
+            var opened = openId && Dished.lists.byId(openId);
+            if (opened) renderOne(opened);
+            else renderAll();
+        })();
+    </script>
+</body>
+
+</html>

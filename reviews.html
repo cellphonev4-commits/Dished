@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dished | My reviews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-cream-100">
+    <div class="lg:pl-[300px]">
+        <div class="max-w-5xl mx-auto px-5 md:px-8 pb-24">
+
+            <header id="topbar"></header>
+
+            <section class="mb-7 animate-fade-up">
+                <h1 class="font-display text-4xl sm:text-5xl text-ink">My reviews</h1>
+                <p class="text-muted mt-1.5">Everything you have said about other people's cooking.</p>
+            </section>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                <div class="card !rounded-2xl p-4">
+                    <i class="ph-duotone ph-chat-circle-text text-2xl text-sage-500"></i>
+                    <div class="font-display text-2xl text-ink mt-1" id="rv-count">0</div>
+                    <div class="text-xs uppercase tracking-wide text-muted">Reviews written</div>
+                </div>
+                <div class="card !rounded-2xl p-4">
+                    <i class="ph-duotone ph-star text-2xl text-sage-500"></i>
+                    <div class="font-display text-2xl text-ink mt-1" id="rv-avg">0.0</div>
+                    <div class="text-xs uppercase tracking-wide text-muted">Average given</div>
+                </div>
+                <div class="card !rounded-2xl p-4">
+                    <i class="ph-duotone ph-cooking-pot text-2xl text-sage-500"></i>
+                    <div class="font-display text-2xl text-ink mt-1" id="rv-recipes">0</div>
+                    <div class="text-xs uppercase tracking-wide text-muted">Recipes covered</div>
+                </div>
+                <div class="card !rounded-2xl p-4">
+                    <i class="ph-duotone ph-hand-heart text-2xl text-sage-500"></i>
+                    <div class="font-display text-2xl text-ink mt-1" id="rv-helpful">0</div>
+                    <div class="text-xs uppercase tracking-wide text-muted">Found helpful</div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <h2 class="section-title !text-2xl"><i class="ph-duotone ph-note-pencil"></i> Your write-ups</h2>
+                <select id="sort" class="select !py-2 !text-sm !w-auto" aria-label="Sort reviews">
+                    <option value="recent">Most recent</option>
+                    <option value="highest">Highest rated</option>
+                    <option value="lowest">Lowest rated</option>
+                </select>
+            </div>
+
+            <div id="reviews-list" class="flex flex-col gap-4"></div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            var qs = Dished.qs, qsa = Dished.qsa, esc = Dished.esc, icon = Dished.icon;
+
+            Dished.mountShell({ active: 'reviews' });
+            Dished.mountTopbar('#topbar');
+
+            function load() {
+                var mine = Dished.ratings.mine();
+                var mode = qs('#sort').value;
+                if (mode === 'highest') mine.sort(function (a, b) { return b.review.rating - a.review.rating; });
+                if (mode === 'lowest') mine.sort(function (a, b) { return a.review.rating - b.review.rating; });
+                return mine;
+            }
+
+            function renderStats(mine) {
+                var sum = mine.reduce(function (a, m) { return a + Number(m.review.rating || 0); }, 0);
+                qs('#rv-count').textContent = mine.length;
+                qs('#rv-avg').textContent = mine.length ? (sum / mine.length).toFixed(1) : '0.0';
+                qs('#rv-recipes').textContent = mine.length;
+                /* A stable pretend "found helpful" tally so the number does not jump around */
+                qs('#rv-helpful').textContent = mine.reduce(function (a, m) {
+                    return a + ((Number(m.recipe.id) % 7) + 3);
+                }, 0);
+            }
+
+            function render() {
+                var mine = load();
+                var host = qs('#reviews-list');
+                renderStats(mine);
+
+                if (!mine.length) {
+                    return Dished.emptyState(host, 'chat-circle-text', 'No reviews yet',
+                        'Open a recipe you have cooked and tell people how it went.');
+                }
+
+                host.innerHTML = mine.map(function (entry) {
+                    var r = entry.recipe, review = entry.review;
+                    return '<article class="card p-5 flex flex-col sm:flex-row gap-5">' +
+                        '<button class="shrink-0 self-start" data-open="' + esc(r.id) + '">' +
+                          '<img src="' + esc(r.imgUrl || Dished.fallbackImg) + '" alt="' + esc(r.title) + '" ' +
+                          'class="w-full sm:w-28 h-32 sm:h-28 rounded-2xl object-cover hover:opacity-90 transition">' +
+                        '</button>' +
+
+                        '<div class="flex-1 min-w-0">' +
+                          '<div class="flex flex-wrap items-start justify-between gap-2 mb-1.5">' +
+                            '<button class="font-display text-xl text-ink hover:text-sage-600 transition text-left" data-open="' + esc(r.id) + '">' + esc(r.title) + '</button>' +
+                            '<div class="flex items-center gap-2 shrink-0">' +
+                              '<button class="btn-icon !w-8 !h-8 !text-base !border-transparent" data-edit="' + esc(r.id) + '" data-index="' + entry.index + '" aria-label="Edit review">' + icon('pencil-simple') + '</button>' +
+                              '<button class="btn-icon !w-8 !h-8 !text-base !border-transparent hover:!bg-berry-500 hover:!text-white" data-delete="' + esc(r.id) + '" data-index="' + entry.index + '" aria-label="Delete review">' + icon('trash') + '</button>' +
+                            '</div>' +
+                          '</div>' +
+
+                          '<div class="flex flex-wrap items-center gap-3 text-sm text-muted mb-3">' +
+                            '<span class="flex gap-0.5">' + Dished.ratings.stars(review.rating) + '</span>' +
+                            '<span>' + esc(review.date) + '</span>' +
+                            '<span class="chip !py-0.5">' + icon('bowl-food', 'text-xs') + esc(r.category || 'Recipe') + '</span>' +
+                          '</div>' +
+
+                          '<p class="text-[15px] leading-relaxed" data-body="' + esc(r.id) + '">' + esc(review.comment) + '</p>' +
+                        '</div>' +
+                      '</article>';
+                }).join('');
+
+                qsa('[data-open]', host).forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        sessionStorage.setItem('activeRecipeId', btn.dataset.open);
+                        window.location.href = 'recipe.html';
+                    });
+                });
+
+                qsa('[data-delete]', host).forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var recipeId = btn.dataset.delete;
+                        var index = Number(btn.dataset.index);
+                        var list = Dished.ratings.reviewsFor(recipeId) || [];
+                        var removed = list[index];
+                        Dished.ratings.removeMine(recipeId, index);
+                        render();
+                        Dished.toast('Review deleted', {
+                            action: {
+                                label: 'Undo',
+                                fn: function () {
+                                    var back = Dished.ratings.reviewsFor(recipeId) || [];
+                                    back.splice(index, 0, removed);
+                                    Dished.ratings.saveReviews(recipeId, back);
+                                    render();
+                                }
+                            }
+                        });
+                    });
+                });
+
+                qsa('[data-edit]', host).forEach(function (btn) {
+                    btn.addEventListener('click', function () { startEdit(btn.dataset.edit, Number(btn.dataset.index)); });
+                });
+            }
+
+            function startEdit(recipeId, index) {
+                var list = Dished.ratings.reviewsFor(recipeId) || [];
+                var review = list[index];
+                if (!review) return;
+
+                var body = qs('[data-body="' + recipeId + '"]');
+                if (!body || body.dataset.editing) return;
+                body.dataset.editing = '1';
+
+                var original = review.comment;
+                body.innerHTML =
+                    '<textarea class="textarea !min-h-[80px] mb-2">' + esc(original) + '</textarea>' +
+                    '<div class="flex gap-2">' +
+                      '<button class="btn btn-primary btn-sm" data-save>' + icon('check') + 'Save</button>' +
+                      '<button class="btn btn-ghost btn-sm" data-cancel>Cancel</button>' +
+                    '</div>';
+
+                var textarea = body.querySelector('textarea');
+                textarea.focus();
+
+                body.querySelector('[data-save]').addEventListener('click', function () {
+                    var text = textarea.value.trim();
+                    if (!text) return Dished.toast('A review needs some words.', { type: 'error' });
+                    list[index].comment = text;
+                    list[index].date = 'Edited just now';
+                    Dished.ratings.saveReviews(recipeId, list);
+                    render();
+                    Dished.toast('Review updated');
+                });
+                body.querySelector('[data-cancel]').addEventListener('click', render);
+            }
+
+            qs('#sort').addEventListener('change', render);
+            render();
+        })();
+    </script>
+</body>
+
+</html>

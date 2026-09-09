@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dished | Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-cream-100">
+    <div class="lg:pl-[300px]">
+        <div class="max-w-4xl mx-auto px-5 md:px-8 pb-24">
+
+            <header id="topbar"></header>
+
+            <section class="mb-7 animate-fade-up">
+                <h1 class="font-display text-4xl sm:text-5xl text-ink">Settings</h1>
+                <p class="text-muted mt-1.5 flex items-center gap-2">
+                    <i class="ph-duotone ph-flask text-sage-500"></i>
+                    Demo build. Everything you change is saved in this browser only.
+                </p>
+            </section>
+
+            <!-- Section nav -->
+            <nav class="flex gap-2 overflow-x-auto no-scrollbar mb-8 pb-1">
+                <a href="#profile" class="pill shrink-0"><i class="ph ph-user"></i> Profile</a>
+                <a href="#diet" class="pill shrink-0"><i class="ph ph-shield-check"></i> Diet</a>
+                <a href="#cooking" class="pill shrink-0"><i class="ph ph-ruler"></i> Cooking</a>
+                <a href="#notifications" class="pill shrink-0"><i class="ph ph-bell"></i> Notifications</a>
+                <a href="#payment" class="pill shrink-0"><i class="ph ph-credit-card"></i> Payment</a>
+                <a href="#orders" class="pill shrink-0"><i class="ph ph-clock-counter-clockwise"></i> Orders</a>
+            </nav>
+
+            <!-- ===== Profile ===== -->
+            <section id="profile" class="card p-6 mb-6 scroll-mt-24">
+                <h2 class="section-title !text-2xl mb-5"><i class="ph-duotone ph-user-gear"></i> Profile</h2>
+
+                <div class="flex flex-wrap items-center gap-5 mb-6">
+                    <img id="settings-avatar" src="" alt="" class="w-20 h-20 rounded-full object-cover border-2 border-sage-200 bg-sage-50">
+                    <div class="flex gap-2">
+                        <button class="btn btn-outline btn-sm" id="change-avatar"><i class="ph ph-camera"></i> Change picture</button>
+                        <button class="btn btn-ghost btn-sm !border !border-sage-200" id="reset-avatar"><i class="ph ph-arrow-counter-clockwise"></i> Use generated</button>
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-x-5">
+                    <div class="field">
+                        <label class="field-label" for="set-name">Display name</label>
+                        <div class="field-wrap"><i class="ph ph-signature"></i>
+                            <input id="set-name" class="input" placeholder="Your name"></div>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="set-username">Email</label>
+                        <div class="field-wrap"><i class="ph ph-envelope-simple"></i>
+                            <input id="set-username" class="input" disabled></div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="field-label" for="set-bio">Short bio</label>
+                    <textarea id="set-bio" class="textarea !min-h-[70px]" rows="2" placeholder="Tell other cooks about yourself"></textarea>
+                </div>
+
+                <div class="flex justify-end">
+                    <button class="btn btn-primary" id="save-profile"><i class="ph ph-check"></i> Save profile</button>
+                </div>
+            </section>
+
+            <!-- ===== Diet ===== -->
+            <section id="diet" class="card p-6 mb-6 scroll-mt-24">
+                <h2 class="section-title !text-2xl mb-2"><i class="ph-duotone ph-shield-check"></i> What you avoid</h2>
+                <p class="text-muted text-[15px] mb-5">
+                    Picked here, recipes open with these swaps already applied.
+                </p>
+                <div class="flex flex-wrap gap-2" id="avoid-pills"></div>
+            </section>
+
+            <!-- ===== Cooking ===== -->
+            <section id="cooking" class="card p-6 mb-6 scroll-mt-24">
+                <h2 class="section-title !text-2xl mb-5"><i class="ph-duotone ph-ruler"></i> Cooking</h2>
+
+                <div class="grid sm:grid-cols-2 gap-5">
+                    <div class="field !mb-0">
+                        <label class="field-label" for="set-units">Measurements</label>
+                        <select id="set-units" class="select">
+                            <option value="us">US customary (cups, oz, lb)</option>
+                            <option value="metric">Metric (ml, g)</option>
+                        </select>
+                        <p class="text-[13px] text-muted mt-2">Recipe pages open in this system.</p>
+                    </div>
+                    <div class="field !mb-0">
+                        <label class="field-label" for="set-filter">Feed opens on</label>
+                        <select id="set-filter" class="select">
+                            <option value="all">All recipes</option>
+                            <option value="Gluten-Free">Gluten-free</option>
+                            <option value="Dairy-Free">Dairy-free</option>
+                            <option value="Nut-Free">Nut-free</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Quick">Quick and easy</option>
+                        </select>
+                        <p class="text-[13px] text-muted mt-2">The home feed starts with this filter on.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== Notifications ===== -->
+            <section id="notifications" class="card p-6 mb-6 scroll-mt-24">
+                <h2 class="section-title !text-2xl mb-5"><i class="ph-duotone ph-bell"></i> Notifications</h2>
+                <div class="flex flex-col divide-y divide-sage-100" id="notify-rows"></div>
+            </section>
+
+            <!-- ===== Payment and delivery ===== -->
+            <section id="payment" class="card p-6 mb-6 scroll-mt-24">
+                <h2 class="section-title !text-2xl mb-2"><i class="ph-duotone ph-credit-card"></i> Payment and delivery</h2>
+                <p class="text-muted text-[15px] mb-5 flex items-start gap-2">
+                    <i class="ph ph-shield text-sage-500 mt-0.5"></i>
+                    <span>These are placeholders for the demo checkout. dished never asks for a real card,
+                    and there is no field anywhere to type one in.</span>
+                </p>
+
+                <h3 class="font-display text-lg text-ink mb-3">Saved methods</h3>
+                <div class="grid sm:grid-cols-2 gap-3 mb-7" id="methods-grid"></div>
+
+                <h3 class="font-display text-lg text-ink mb-3">Delivery addresses</h3>
+                <div class="grid sm:grid-cols-2 gap-3" id="addresses-grid"></div>
+            </section>
+
+            <!-- ===== Orders ===== -->
+            <section id="orders" class="card p-6 mb-6 scroll-mt-24">
+                <h2 class="section-title !text-2xl mb-5"><i class="ph-duotone ph-clock-counter-clockwise"></i> Order history</h2>
+                <div class="flex flex-col gap-3" id="orders-list"></div>
+            </section>
+
+            <!-- ===== Reset ===== -->
+            <section class="card p-6 border-berry-400/40">
+                <h2 class="section-title !text-2xl mb-2"><i class="ph-duotone ph-warning text-berry-500"></i> Reset the demo</h2>
+                <p class="text-muted text-[15px] mb-5">
+                    Puts the sample recipes, lists, reviews and orders back the way they started.
+                    Anything you added is cleared.
+                </p>
+                <button class="btn btn-danger" id="reset-demo"><i class="ph ph-arrow-counter-clockwise"></i> Reset demo data</button>
+            </section>
+
+        </div>
+    </div>
+
+    <input type="file" id="settings-avatar-input" accept="image/*" class="hidden">
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            var qs = Dished.qs, qsa = Dished.qsa, esc = Dished.esc, icon = Dished.icon;
+
+            Dished.mountShell({ active: 'settings' });
+            Dished.mountTopbar('#topbar');
+
+            var me = Dished.auth.current();
+            var conf = Dished.checkoutData.get();
+
+            /* ---------------- Profile ---------------- */
+            function paintAvatar() {
+                qs('#settings-avatar').src = Dished.store.get(Dished.K.avatar, null) || Dished.avatar(me.name);
+            }
+            paintAvatar();
+
+            qs('#set-name').value = Dished.settings.get().displayName || me.name;
+            qs('#set-username').value = me.username;
+            qs('#set-bio').value = Dished.settings.get().bio;
+
+            var avatarInput = qs('#settings-avatar-input');
+            qs('#change-avatar').addEventListener('click', function () { avatarInput.click(); });
+            avatarInput.addEventListener('change', function (e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    Dished.store.set(Dished.K.avatar, ev.target.result);
+                    qsa('[data-avatar], #sidebar-avatar, #settings-avatar').forEach(function (img) { img.src = ev.target.result; });
+                    Dished.toast('Profile picture updated');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            qs('#reset-avatar').addEventListener('click', function () {
+                localStorage.removeItem(Dished.K.avatar);
+                var generated = Dished.avatar(me.name);
+                qsa('[data-avatar], #sidebar-avatar, #settings-avatar').forEach(function (img) { img.src = generated; });
+                Dished.toast('Back to your generated avatar');
+            });
+
+            qs('#save-profile').addEventListener('click', function () {
+                var name = qs('#set-name').value.trim();
+                if (!name) return Dished.toast('A display name is required.', { type: 'error' });
+                Dished.settings.set({ displayName: name, bio: qs('#set-bio').value.trim() });
+                if (!me.isGuest) sessionStorage.setItem('loggedInName', name);
+                Dished.toast('Profile saved');
+                setTimeout(function () { window.location.reload(); }, 700);
+            });
+
+            /* ---------------- Diet ---------------- */
+            var AVOID = [
+                { key: 'dairy', label: 'Dairy', glyph: 'cow' },
+                { key: 'gluten', label: 'Gluten', glyph: 'grains-slash' },
+                { key: 'nuts', label: 'Nuts', glyph: 'acorn' },
+                { key: 'eggs', label: 'Eggs', glyph: 'egg' },
+                { key: 'soy', label: 'Soy', glyph: 'plant' },
+                { key: 'shellfish', label: 'Shellfish', glyph: 'shrimp' },
+                { key: 'vegan', label: 'Anything not vegan', glyph: 'leaf' }
+            ];
+
+            function paintAvoid() {
+                var current = Dished.settings.get().avoid || [];
+                qs('#avoid-pills').innerHTML = AVOID.map(function (a) {
+                    return '<button class="pill' + (current.indexOf(a.key) > -1 ? ' is-active' : '') + '" data-avoid="' + a.key + '">' +
+                        icon(a.glyph) + a.label + '</button>';
+                }).join('');
+
+                qsa('[data-avoid]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var list = (Dished.settings.get().avoid || []).slice();
+                        var i = list.indexOf(btn.dataset.avoid);
+                        if (i > -1) list.splice(i, 1); else list.push(btn.dataset.avoid);
+                        Dished.settings.set({ avoid: list });
+                        paintAvoid();
+                        Dished.toast(i > -1 ? 'Removed from your list' : 'Recipes will swap this out for you');
+                    });
+                });
+            }
+            paintAvoid();
+
+            /* ---------------- Cooking ---------------- */
+            qs('#set-units').value = Dished.settings.get().units;
+            qs('#set-filter').value = Dished.settings.get().defaultFilter;
+
+            qs('#set-units').addEventListener('change', function (e) {
+                Dished.settings.set({ units: e.target.value });
+                Dished.toast('Recipes will open in ' + (e.target.value === 'metric' ? 'metric' : 'US customary'));
+            });
+            qs('#set-filter').addEventListener('change', function (e) {
+                Dished.settings.set({ defaultFilter: e.target.value });
+                Dished.toast('Feed filter saved');
+            });
+
+            /* ---------------- Notifications ---------------- */
+            var NOTIFY = [
+                { key: 'notifyReviews', label: 'Reviews on my recipes', hint: 'When someone rates something you shared', glyph: 'chat-circle-text' },
+                { key: 'notifyFollowers', label: 'New followers', hint: 'When a cook starts following you', glyph: 'users' },
+                { key: 'notifyWeekly', label: 'Weekly digest', hint: 'A Sunday round-up of what is trending', glyph: 'calendar-blank' }
+            ];
+
+            function paintNotify() {
+                var current = Dished.settings.get();
+                qs('#notify-rows').innerHTML = NOTIFY.map(function (n) {
+                    var on = !!current[n.key];
+                    return '<div class="flex items-center gap-4 py-4">' +
+                        '<span class="w-10 h-10 rounded-xl bg-sage-50 text-sage-500 flex items-center justify-center shrink-0">' +
+                          icon(n.glyph, 'text-xl', 'duotone') + '</span>' +
+                        '<div class="flex-1 min-w-0"><div class="font-medium">' + n.label + '</div>' +
+                          '<div class="text-[13px] text-muted">' + n.hint + '</div></div>' +
+                        '<button role="switch" aria-checked="' + on + '" data-notify="' + n.key + '" ' +
+                          'class="relative w-12 h-7 rounded-full transition shrink-0 ' + (on ? 'bg-sage-500' : 'bg-sage-200') + '">' +
+                          '<span class="absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all ' + (on ? 'left-6' : 'left-1') + '"></span>' +
+                        '</button></div>';
+                }).join('');
+
+                qsa('[data-notify]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var key = btn.dataset.notify;
+                        var patch = {};
+                        patch[key] = !Dished.settings.get()[key];
+                        Dished.settings.set(patch);
+                        paintNotify();
+                    });
+                });
+            }
+            paintNotify();
+
+            /* ---------------- Payment and delivery ---------------- */
+            qs('#methods-grid').innerHTML = conf.methods.map(function (m) {
+                var isDefault = m.id === conf.methodId;
+                return '<div class="flex items-center gap-3 p-4 rounded-2xl border-[1.5px] ' +
+                    (isDefault ? 'border-sage-500 bg-sage-50' : 'border-sage-100 bg-white') + '">' +
+                    '<span class="w-10 h-10 rounded-xl bg-white text-sage-500 flex items-center justify-center shrink-0 border border-sage-100">' +
+                      icon(m.glyph, 'text-xl', 'duotone') + '</span>' +
+                    '<div class="flex-1 min-w-0"><div class="font-medium flex items-center gap-2">' + esc(m.label) +
+                      (isDefault ? '<span class="chip !py-0 !text-[11px]">Default</span>' : '') + '</div>' +
+                      '<div class="text-[12.5px] text-muted">' + esc(m.hint) + '</div></div>' +
+                    '</div>';
+            }).join('');
+
+            qs('#addresses-grid').innerHTML = conf.addresses.map(function (a) {
+                var isDefault = a.id === conf.addressId;
+                return '<div class="p-4 rounded-2xl border-[1.5px] ' +
+                    (isDefault ? 'border-sage-500 bg-sage-50' : 'border-sage-100 bg-white') + '">' +
+                    '<div class="font-medium flex items-center gap-2 mb-1">' +
+                      icon(a.id === 'work' ? 'storefront' : 'house', 'text-sage-500') + esc(a.label) +
+                      (isDefault ? '<span class="chip !py-0 !text-[11px]">Default</span>' : '') + '</div>' +
+                    '<p class="text-[13.5px] text-muted leading-relaxed">' + esc(a.line) + '<br>' + esc(a.city) + '<br>' + esc(a.phone) + '</p>' +
+                    '</div>';
+            }).join('');
+
+            /* ---------------- Orders ---------------- */
+            function paintOrders() {
+                var all = Dished.orders.list();
+                var host = qs('#orders-list');
+                if (!all.length) {
+                    return Dished.emptyState(host, 'package', 'No orders yet',
+                        'Fill your basket and run through the demo checkout.');
+                }
+                host.innerHTML = all.map(function (o) {
+                    var live = o.status !== 'Delivered';
+                    return '<details class="rounded-2xl border border-sage-100 bg-white overflow-hidden">' +
+                        '<summary class="flex flex-wrap items-center gap-3 p-4 cursor-pointer list-none">' +
+                          '<span class="w-10 h-10 rounded-xl bg-sage-50 text-sage-500 flex items-center justify-center shrink-0">' +
+                            icon(live ? 'motorcycle' : 'package', 'text-xl', 'duotone') + '</span>' +
+                          '<span class="flex-1 min-w-0"><span class="block font-medium">' + esc(o.id) + '</span>' +
+                            '<span class="block text-[13px] text-muted">' + esc(o.date) + ' &middot; ' + esc(o.method) + ' &middot; ' + o.items.length + ' items</span></span>' +
+                          '<span class="chip ' + (live ? '!bg-honey-400/20 !text-honey-500' : '') + '">' + esc(o.status) + '</span>' +
+                          '<span class="font-display text-lg text-sage-600">' + Dished.money.format(o.total) + '</span>' +
+                        '</summary>' +
+                        '<div class="px-4 pb-4 pt-1 border-t border-sage-100 divide-y divide-sage-50">' +
+                          o.items.map(function (i) {
+                              return '<div class="flex justify-between gap-3 py-2 text-[14.5px]">' +
+                                  '<span class="truncate">' + esc(i.name) + '</span>' +
+                                  '<span class="text-muted shrink-0">' + Dished.money.format(i.price) + '</span></div>';
+                          }).join('') +
+                        '</div></details>';
+                }).join('');
+            }
+            paintOrders();
+
+            /* ---------------- Reset ---------------- */
+            qs('#reset-demo').addEventListener('click', function () {
+                [Dished.K.recipes, Dished.K.featured, Dished.K.seed, Dished.K.lists, Dished.K.settings,
+                 Dished.K.checkout, Dished.K.orders, Dished.K.cart, Dished.K.liked, Dished.K.avatar]
+                    .forEach(function (key) { localStorage.removeItem(key); });
+                Object.keys(localStorage)
+                    .filter(function (k) { return k.indexOf('reviews_recipe_') === 0; })
+                    .forEach(function (k) { localStorage.removeItem(k); });
+                Dished.toast('Demo data reset');
+                setTimeout(function () { window.location.href = 'home.html'; }, 800);
+            });
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,65 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dished - What is dished?</title>
+    <title>dished | What is dished?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="theme.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="landing-body">
-    <!-- Header -->
-    <header class="landing-header">
-        <a href="index.html" style="text-decoration: none;">
-            <h1 style="font-size: 42px; color: #fdfcd7; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.25);">dished</h1>
-        </a>
-        <nav class="landing-nav-links">
-            <a href="index.html" class="landing-nav-link">Home</a>
-            <a href="sign.html" class="landing-nav-btn">Sign In</a>
-        </nav>
+
+<body class="bg-gradient-to-b from-cream-100 via-cream-200 to-cream-500/70 min-h-screen flex flex-col">
+
+    <!-- ============ Header ============ -->
+    <header class="sticky top-0 z-50 bg-sage-500/95 backdrop-blur-md shadow-soft">
+        <div class="max-w-7xl mx-auto px-5 sm:px-8 h-[78px] flex items-center justify-between gap-4">
+            <a href="index.html" class="brand" aria-label="dished home"><img src="logo-cream.png" alt="dished" class="h-[46px] sm:h-[58px]"></a>
+            <nav class="hidden md:flex items-center gap-1 text-cream-100">
+                <a href="index.html" class="px-4 py-2 rounded-full hover:bg-cream-100/15 transition">Home</a>
+                <a href="#story" class="px-4 py-2 rounded-full hover:bg-cream-100/15 transition">The idea</a>
+                <a href="#swaps" class="px-4 py-2 rounded-full hover:bg-cream-100/15 transition">Swaps</a>
+            </nav>
+            <a href="sign.html" class="btn btn-cream btn-sm sm:!px-6"><i class="ph ph-sign-in"></i> Sign in</a>
+        </div>
     </header>
 
-    <!-- Hero -->
-    <main class="landing-hero">
-        <div class="landing-hero-content">
-            <div class="badge-tag">Recipe sharing, minus the guesswork</div>
-            <h1 class="hero-title" style="font-size: 56px;">
-                Every recipe,<br>tailored to <span>your table.</span>
+    <!-- ============ Hero ============ -->
+    <main class="max-w-7xl w-full mx-auto px-5 sm:px-8 py-14 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
+        <div class="animate-fade-up">
+            <span class="chip !py-2 !px-4 !text-sm mb-6">
+                <i class="ph-duotone ph-sparkle text-base"></i> Recipe sharing, minus the guesswork
+            </span>
+            <h1 class="font-display text-[42px] sm:text-[56px] leading-[1.1] text-ink mb-6">
+                Every recipe,<br>tailored to <span class="text-sage-500">your table.</span>
             </h1>
-            <p style="font-size: 18px; color: #4a5d52; line-height: 1.7; margin-bottom: 30px;">
-                dished is where home cooks share recipes that adapt to your allergies and diet — dairy, gluten,
-                nuts, eggs, soy, shellfish, or vegan — and send the ingredients straight to your cart.
+            <p class="text-[17px] leading-relaxed text-muted max-w-xl mb-8">
+                dished is where home cooks share recipes that adapt to your allergies and diet:
+                dairy, gluten, nuts, eggs, soy, shellfish or vegan, then send the ingredients
+                straight to your basket.
             </p>
-            <div class="hero-cta-group">
-                <a href="sign.html" class="hero-cta-primary">Continue to Sign In</a>
-                <a href="home.html" class="hero-cta-secondary">Browse as Guest</a>
+            <div class="flex flex-wrap gap-3">
+                <a href="sign.html" class="btn btn-primary btn-lg">Continue to sign in <i class="ph-bold ph-arrow-right"></i></a>
+                <a href="home.html" class="btn btn-outline btn-lg"><i class="ph ph-compass"></i> Browse as guest</a>
             </div>
         </div>
 
-        <div class="landing-hero-visual">
-            <div class="hero-image-card">
-                <img src="pasta.jfif" alt="Pasta with tomatoes and herbs">
-                <div class="hero-card-badge">
-                    <h3>Spaghetti Carbonara</h3>
-                    <p>Made dairy-free in one click</p>
+        <div class="relative flex justify-center lg:justify-end animate-fade-up">
+            <div class="relative w-full max-w-[470px] rounded-xl3 overflow-hidden border-[6px] border-white shadow-lift animate-float">
+                <img src="pasta.jfif" alt="Pasta with tomatoes and herbs" class="w-full h-[380px] sm:h-[420px] object-cover">
+                <div class="absolute inset-x-4 bottom-4 p-4 rounded-2xl bg-white/90 backdrop-blur shadow-card">
+                    <h3 class="font-display text-xl text-ink mb-1">Spaghetti Carbonara</h3>
+                    <p class="text-[13px] text-muted flex items-center gap-1.5">
+                        <i class="ph ph-arrows-clockwise text-sage-500"></i> Made dairy-free in one click
+                    </p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Recipe photo strip -->
-    <section style="text-align: center; padding: 10px 20px 90px 20px;">
-        <h2 class="section-headline" style="margin-bottom: 30px;">Fresh from the feed</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 28px;">
-            <img src="avacado.jfif" alt="Avocado toast" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 4px solid #5b8266; box-shadow: 0 8px 18px rgba(0,0,0,0.15);">
-            <img src="shrimp.jfif" alt="Shrimp scampi pasta" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 4px solid #5b8266; box-shadow: 0 8px 18px rgba(0,0,0,0.15);">
-            <img src="pizza.jfif" alt="Margherita pizza" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 4px solid #5b8266; box-shadow: 0 8px 18px rgba(0,0,0,0.15);">
-            <img src="cookies.jfif" alt="Chocolate chip cookies" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 4px solid #5b8266; box-shadow: 0 8px 18px rgba(0,0,0,0.15);">
+    <!-- ============ The idea ============ -->
+    <section id="story" class="bg-white/60 border-y border-sage-100 py-20">
+        <div class="max-w-5xl mx-auto px-5 sm:px-8">
+            <h2 class="font-display text-4xl text-ink text-center mb-4">The idea behind dished</h2>
+            <p class="text-center text-muted text-lg max-w-2xl mx-auto mb-14">
+                Most recipe sites assume everyone at the table can eat everything.
+                dished starts from the opposite assumption.
+            </p>
+
+            <div class="grid sm:grid-cols-3 gap-6">
+                <div class="card p-7">
+                    <i class="ph-duotone ph-magnifying-glass text-3xl text-sage-500 mb-4 block"></i>
+                    <h3 class="font-display text-xl text-ink mb-2">Find</h3>
+                    <p class="text-muted text-[15px] leading-relaxed">Search by dish, ingredient, tag or cook, then filter the feed down to what you can actually eat.</p>
+                </div>
+                <div class="card p-7">
+                    <i class="ph-duotone ph-arrows-clockwise text-3xl text-sage-500 mb-4 block"></i>
+                    <h3 class="font-display text-xl text-ink mb-2">Adapt</h3>
+                    <p class="text-muted text-[15px] leading-relaxed">Pick an allergy and the ingredient list rewrites itself, with every swap marked so you can see the change.</p>
+                </div>
+                <div class="card p-7">
+                    <i class="ph-duotone ph-basket text-3xl text-sage-500 mb-4 block"></i>
+                    <h3 class="font-display text-xl text-ink mb-2">Cook</h3>
+                    <p class="text-muted text-[15px] leading-relaxed">Add the ingredients to your basket, flip to metric if you need it, tick off the steps as you go.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="landing-footer">
-        <p>© 2026 dished. Savor Every Bite, Tailored for Every Table.</p>
+    <!-- ============ Swap table ============ -->
+    <section id="swaps" class="max-w-5xl mx-auto w-full px-5 sm:px-8 py-20">
+        <h2 class="font-display text-4xl text-ink text-center mb-3">What gets swapped</h2>
+        <p class="text-center text-muted mb-12">A few of the substitutions dished makes for you.</p>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+            <div class="card p-5 flex items-center gap-4">
+                <i class="ph-duotone ph-cow text-2xl text-sage-500 shrink-0"></i>
+                <div class="flex-1 text-[15px]"><span class="text-muted line-through">Butter, milk, cream</span>
+                    <div class="flex items-center gap-2 mt-1"><i class="ph-bold ph-arrow-right text-sage-500 text-xs"></i> Coconut oil, oat milk, coconut cream</div></div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+                <i class="ph-duotone ph-grains-slash text-2xl text-sage-500 shrink-0"></i>
+                <div class="flex-1 text-[15px]"><span class="text-muted line-through">Flour, bread, pasta</span>
+                    <div class="flex items-center gap-2 mt-1"><i class="ph-bold ph-arrow-right text-sage-500 text-xs"></i> 1:1 gluten-free flour, GF bread &amp; pasta</div></div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+                <i class="ph-duotone ph-acorn text-2xl text-sage-500 shrink-0"></i>
+                <div class="flex-1 text-[15px]"><span class="text-muted line-through">Peanuts, almonds, cashews</span>
+                    <div class="flex items-center gap-2 mt-1"><i class="ph-bold ph-arrow-right text-sage-500 text-xs"></i> Pumpkin seeds, sunflower seed butter</div></div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+                <i class="ph-duotone ph-egg text-2xl text-sage-500 shrink-0"></i>
+                <div class="flex-1 text-[15px]"><span class="text-muted line-through">Eggs</span>
+                    <div class="flex items-center gap-2 mt-1"><i class="ph-bold ph-arrow-right text-sage-500 text-xs"></i> Flax egg (1 tbsp flax + 3 tbsp water)</div></div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+                <i class="ph-duotone ph-shrimp text-2xl text-sage-500 shrink-0"></i>
+                <div class="flex-1 text-[15px]"><span class="text-muted line-through">Shrimp</span>
+                    <div class="flex items-center gap-2 mt-1"><i class="ph-bold ph-arrow-right text-sage-500 text-xs"></i> King oyster mushrooms</div></div>
+            </div>
+            <div class="card p-5 flex items-center gap-4">
+                <i class="ph-duotone ph-leaf text-2xl text-sage-500 shrink-0"></i>
+                <div class="flex-1 text-[15px]"><span class="text-muted line-through">Chicken, beef</span>
+                    <div class="flex items-center gap-2 mt-1"><i class="ph-bold ph-arrow-right text-sage-500 text-xs"></i> Plant-based chick'n, lentils &amp; mushrooms</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ Feed strip ============ -->
+    <section class="pb-20">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 text-center">
+            <h2 class="font-display text-4xl text-ink mb-10">Fresh from the feed</h2>
+            <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
+                <figure class="group">
+                    <img src="avacado.jfif" alt="Avocado toast" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-sage-500 shadow-card group-hover:scale-105 transition">
+                    <figcaption class="mt-3 text-sm text-muted">Avocado toast</figcaption>
+                </figure>
+                <figure class="group">
+                    <img src="shrimp.jfif" alt="Shrimp scampi pasta" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-sage-500 shadow-card group-hover:scale-105 transition">
+                    <figcaption class="mt-3 text-sm text-muted">Shrimp scampi</figcaption>
+                </figure>
+                <figure class="group">
+                    <img src="pizza.jfif" alt="Margherita pizza" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-sage-500 shadow-card group-hover:scale-105 transition">
+                    <figcaption class="mt-3 text-sm text-muted">Margherita pizza</figcaption>
+                </figure>
+                <figure class="group">
+                    <img src="cookies.jfif" alt="Chocolate chip cookies" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-sage-500 shadow-card group-hover:scale-105 transition">
+                    <figcaption class="mt-3 text-sm text-muted">Chocolate chip cookies</figcaption>
+                </figure>
+            </div>
+
+            <a href="home.html" class="btn btn-primary btn-lg mt-12">Open the feed <i class="ph-bold ph-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- ============ Footer ============ -->
+    <footer class="mt-auto bg-sage-900 text-cream-100/75 py-10 text-center">
+        <a href="index.html" class="brand" aria-label="dished home"><img src="logo-cream.png" alt="dished" class="h-12"></a>
+        <p class="text-sm mt-3">© 2026 dished. Savor Every Bite, Tailored for Every Table.</p>
     </footer>
 </body>
+
 </html>
